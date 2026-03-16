@@ -1,4 +1,3 @@
-// Import Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -6,7 +5,6 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 
-// CONFIG FIREBASE PROJECT ANDA
 const firebaseConfig = {
   apiKey: "AIzaSyBxO6-KZYaWRLnGuO2bhQ0oP_Rs0xjppoE",
   authDomain: "peminjaman-buku-77482.firebaseapp.com",
@@ -17,18 +15,10 @@ const firebaseConfig = {
   measurementId: "G-VPXLXPQJ1D"
 };
 
-
-// INISIALISASI FIREBASE
 const app = initializeApp(firebaseConfig);
 
-
-// AUTHENTICATION
 const auth = getAuth(app);
 
-
-// DATABASE FIRESTORE
 const db = getFirestore(app);
 
-
-// EXPORT AGAR BISA DIPAKAI FILE LAIN
 export { auth, db };

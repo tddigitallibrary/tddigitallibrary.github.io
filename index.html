@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
 
-<meta charset="UTF-8">
-
-<title>Login Sistem Perpustakaan</title>
+<title>Login Perpustakaan</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -12,34 +10,23 @@
 
 <body>
 
-<div class="background"></div>
-
-<div class="login-container">
-
 <div class="login-box">
 
-<h1>Digital Library</h1>
+<h2>Digital Library</h2>
 
-<p class="subtitle">Login Sistem Perpustakaan</p>
-
-<input id="email" type="email" placeholder="Email">
+<input id="email" placeholder="Email">
 
 <input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">LOGIN</button>
 
-<p class="register">
-    Belum punya akun?
-    <a class="glow-link" href="register.html">Daftar disini</a>
-</p>
+<p>Belum punya akun? <span onclick="goRegister()">Daftar</span></p>
 
 <p class="footer">Tunas Daud HighSchool Library System</p>
-
+    
 </div>
 
-</div>
-
-<script src="login.js"></script>
+<script type="module" src="login.js"></script>
 
 </body>
 </html>

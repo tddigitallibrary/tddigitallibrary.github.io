@@ -3,48 +3,37 @@ import { db } from "./firebase.js";
 import {
 collection,
 getDocs,
-addDoc,
 updateDoc,
-doc,
-getDoc
-}
-from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+doc
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 
-// LOAD BUKU
 async function loadBuku(){
 
-let list = document.getElementById("listBuku");
+let snap = await getDocs(collection(db,"buku"));
 
-list.innerHTML="";
+let html="";
 
-let snapshot = await getDocs(collection(db,"buku"));
+snap.forEach(b=>{
 
-snapshot.forEach((d)=>{
+let data = b.data();
 
-let data = d.data();
-
-let status = data.stok==0 ? "<span class='stokHabis'>Stok Habis</span>" : "(stok:"+data.stok+")";
-
-let tombol = data.stok==0 ? "" : `<button onclick="pinjam('${d.id}','${data.judul}',${data.stok})">Pinjam</button>`;
-
-list.innerHTML += `
-<div>
-
-${data.judul} ${status}
-
-${tombol}
-
-</div>
+html += `
+<p>
+${data.judul} | Stok : ${data.stok}
+<button onclick="pinjam('${b.id}',${data.stok})">
+Pinjam
+</button>
+</p>
 `;
 
 });
 
+document.getElementById("bukuList").innerHTML = html;
+
 }
 
-
-// PINJAM
-window.pinjam = async function(id,judul,stok){
+window.pinjam = async function(id,stok){
 
 if(stok<=0){
 
@@ -54,88 +43,16 @@ return;
 
 }
 
-let nama = document.getElementById("nama").value;
-
-await addDoc(collection(db,"peminjaman"),{
-
-nama:nama,
-buku:judul,
-tanggal_pinjam:new Date().toLocaleDateString(),
-status:"dipinjam",
-bukuID:id
-
-});
-
 await updateDoc(doc(db,"buku",id),{
 
 stok:stok-1
 
 });
 
-loadBuku();
-loadRiwayat();
-
-}
-
-
-// RIWAYAT
-async function loadRiwayat(){
-
-let list = document.getElementById("riwayat");
-
-list.innerHTML="";
-
-let snapshot = await getDocs(collection(db,"peminjaman"));
-
-snapshot.forEach((d)=>{
-
-let data = d.data();
-
-let tombol = data.status=="dipinjam"
-? `<button onclick="kembalikan('${d.id}','${data.bukuID}')">Kembalikan</button>`
-: "Sudah dikembalikan";
-
-list.innerHTML += `
-<div>
-
-${data.buku} - ${data.status}
-
-${tombol}
-
-</div>
-`;
-
-});
-
-}
-
-
-// KEMBALIKAN
-window.kembalikan = async function(pinjamID,bukuID){
-
-let bukuRef = doc(db,"buku",bukuID);
-
-let bukuSnap = await getDoc(bukuRef);
-
-let stok = bukuSnap.data().stok;
-
-await updateDoc(doc(db,"peminjaman",pinjamID),{
-
-status:"kembali",
-tanggal_kembali:new Date().toLocaleDateString()
-
-});
-
-await updateDoc(bukuRef,{
-
-stok:stok+1
-
-});
+alert("Buku dipinjam");
 
 loadBuku();
-loadRiwayat();
 
 }
 
 loadBuku();
-loadRiwayat();

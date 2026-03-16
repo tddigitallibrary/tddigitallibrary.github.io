@@ -41,3 +41,44 @@ window.goRegister = function(){
 window.location="register.html";
 
 }
+
+window.login = async function(){
+
+try{
+
+let email = document.getElementById("email").value;
+let password = document.getElementById("password").value;
+
+let user = await signInWithEmailAndPassword(auth,email,password);
+
+let uid = user.user.uid;
+
+let userDoc = await getDoc(doc(db,"users",uid));
+
+if(!userDoc.exists()){
+
+alert("Data user tidak ditemukan di database");
+
+return;
+
+}
+
+let role = userDoc.data().role;
+
+if(role=="admin"){
+
+window.location="admin.html";
+
+}else{
+
+window.location="user.html";
+
+}
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+}

@@ -39,3 +39,8 @@ window.location="user.html";
 }
 
 }
+window.goRegister = function(){
+
+window.location = "register.html";
+
+}

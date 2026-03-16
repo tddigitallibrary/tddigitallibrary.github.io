@@ -1,37 +1,47 @@
-async function loadStatistik(){
+import { db } from "./firebase.js";
 
-    let bukuSnap = await getDocs(collection(db,"buku"));
-    
-    let pinjamSnap = await getDocs(collection(db,"peminjaman"));
-    
-    let totalBuku = bukuSnap.size;
-    
-    let totalPinjam = 0;
-    
-    let tersedia = 0;
-    
-    bukuSnap.forEach((b)=>{
-    
-    let data = b.data();
-    
-    tersedia += data.stok;
-    
-    });
-    
-    pinjamSnap.forEach((p)=>{
-    
-    if(p.data().status=="dipinjam"){
-    
-    totalPinjam++;
-    
-    }
-    
-    });
-    
-    document.getElementById("totalBuku").innerText = totalBuku;
-    
-    document.getElementById("totalPinjam").innerText = totalPinjam;
-    
-    document.getElementById("bukuTersedia").innerText = tersedia;
-    
-    }
+import {
+collection,
+addDoc,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+
+window.tambahBuku = async function(){
+
+let judul = document.getElementById("judul").value;
+
+let stok = parseInt(document.getElementById("stok").value);
+
+await addDoc(collection(db,"buku"),{
+
+judul:judul,
+stok:stok
+
+});
+
+alert("Buku ditambahkan");
+
+loadBuku();
+
+}
+
+async function loadBuku(){
+
+let snap = await getDocs(collection(db,"buku"));
+
+let html="";
+
+snap.forEach(doc=>{
+
+let d = doc.data();
+
+html += `<p>${d.judul} | Stok : ${d.stok}</p>`;
+
+});
+
+document.getElementById("listBuku").innerHTML = html;
+
+}
+
+loadBuku();

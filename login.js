@@ -12,52 +12,20 @@ getDoc
 
 window.login = async function(){
 
-let email = document.getElementById("email").value;
-
-let password = document.getElementById("password").value;
-
-let user = await signInWithEmailAndPassword(auth,email,password);
-
-let uid = user.user.uid;
-
-let userDoc = await getDoc(doc(db,"users",uid));
-
-let role = userDoc.data().role;
-
-if(role=="admin"){
-
-window.location="admin.html";
-
-}else{
-
-window.location="user.html";
-
-}
-
-}
-
-window.goRegister = function(){
-
-window.location="register.html";
-
-}
-
-window.login = async function(){
-
 try{
 
 let email = document.getElementById("email").value;
 let password = document.getElementById("password").value;
 
-let user = await signInWithEmailAndPassword(auth,email,password);
+let userCredential = await signInWithEmailAndPassword(auth,email,password);
 
-let uid = user.user.uid;
+let uid = userCredential.user.uid;
 
 let userDoc = await getDoc(doc(db,"users",uid));
 
 if(!userDoc.exists()){
 
-alert("Data user tidak ditemukan di database");
+alert("Data user tidak ada di database");
 
 return;
 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Dashboard Admin</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2>📚 Library</h2>
+
+<ul>
+
+<li>Dashboard</li>
+<li>Data Buku</li>
+<li>Peminjaman</li>
+<li>Statistik</li>
+<li>Logout</li>
+
+</ul>
+
+</div>
+
+
+<!-- MAIN CONTENT -->
+
+<div class="main">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<h2>Dashboard Admin</h2>
+
+<div class="profile">
+
+Admin
+
+</div>
+
+</div>
+
+
+<!-- CARD STATISTIK -->
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Buku</h3>
+<p id="totalBuku">0</p>
+</div>
+
+<div class="card">
+<h3>Total Dipinjam</h3>
+<p id="totalPinjam">0</p>
+</div>
+
+<div class="card">
+<h3>Buku Tersedia</h3>
+<p id="bukuTersedia">0</p>
+</div>
+
+</div>
+
+
+<!-- GRAFIK -->
+
+<div class="chart-box">
+
+<h3>Statistik Peminjaman Buku</h3>
+
+<canvas id="grafikBuku"></canvas>
+
+</div>
+
+
+<!-- TABEL PEMINJAMAN -->
+
+<div class="table-box">
+
+<h3>Data Peminjaman</h3>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Nama</th>
+<th>Buku</th>
+<th>Tanggal</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="tabelPinjam">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module" src="admin.js"></script>
+
+</body>
+</html>

@@ -1,43 +1,54 @@
+// Import Firebase
 import { auth, db } from "./firebase.js";
 
-import {
-createUserWithEmailAndPassword
+import { 
+  createUserWithEmailAndPassword 
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-import {
-doc,
-setDoc
+import { 
+  doc, setDoc 
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+// Form register
+const registerForm = document.getElementById("registerForm");
 
-window.register = async function(){
+registerForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-try{
+  const nama = document.getElementById("nama").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-let nama = document.getElementById("nama").value;
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
+  try {
 
-let userCredential = await createUserWithEmailAndPassword(auth,email,password);
+    // Membuat akun di Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-let uid = userCredential.user.uid;
+    const user = userCredential.user;
 
-await setDoc(doc(db,"users",uid),{
+    // Simpan data user ke Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      nama: nama,
+      email: email,
+      role: "siswa",
+      createdAt: new Date()
+    });
 
-nama:nama,
-email:email,
-role:"user"
+    // Notifikasi berhasil
+    alert("Registrasi berhasil! Silakan login.");
 
+    // Redirect ke halaman login
+    window.location.href = "login.html";
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Registrasi gagal: " + error.message);
+
+  }
 });
-
-alert("Registrasi berhasil");
-
-window.location="index.html";
-
-}catch(error){
-
-alert(error.message);
-
-}
-
-}

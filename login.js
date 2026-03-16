@@ -2,14 +2,12 @@ import { auth, db } from "./firebase.js";
 
 import {
 signInWithEmailAndPassword
-}
-from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 import {
 doc,
 getDoc
-}
-from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 
 window.login = async function(){
@@ -18,12 +16,10 @@ let email = document.getElementById("email").value;
 
 let password = document.getElementById("password").value;
 
-let userCredential = await signInWithEmailAndPassword(auth,email,password);
+let user = await signInWithEmailAndPassword(auth,email,password);
 
-let uid = userCredential.user.uid;
+let uid = user.user.uid;
 
-
-// cek role user
 let userDoc = await getDoc(doc(db,"users",uid));
 
 let role = userDoc.data().role;
@@ -39,8 +35,9 @@ window.location="user.html";
 }
 
 }
+
 window.goRegister = function(){
 
-window.location = "register.html";
+window.location="register.html";
 
 }

@@ -1,22 +1,41 @@
-function login(){
+import { auth, db } from "./firebase.js";
 
-    let email = document.getElementById("email").value;
-    
-    let password = document.getElementById("password").value;
-    
-    if(email=="" || password==""){
-    
-    alert("Isi email dan password");
-    
-    return;
-    
-    }
-    
-    alert("Login berhasil");
-    
-    }
-window.goRegister = function(){
+import {
+signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-window.location = "register.html";
+import {
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+
+window.login = async function(){
+
+let email = document.getElementById("email").value;
+
+let password = document.getElementById("password").value;
+
+let userCredential = await signInWithEmailAndPassword(auth,email,password);
+
+let uid = userCredential.user.uid;
+
+
+// cek role user
+let userDoc = await getDoc(doc(db,"users",uid));
+
+let role = userDoc.data().role;
+
+if(role=="admin"){
+
+window.location="admin.html";
+
+}else{
+
+window.location="user.html";
+
+}
 
 }

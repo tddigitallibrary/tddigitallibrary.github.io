@@ -3,56 +3,115 @@ import { db } from "./firebase.js";
 import {
 collection,
 getDocs,
-updateDoc,
-doc
+addDoc
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const tabelBuku = document.getElementById("tabelBuku");
+const tabelPinjam = document.getElementById("tabelPinjam");
+const searchInput = document.getElementById("search");
+
+let dataBuku=[];
 
 
 async function loadBuku(){
 
-let snap = await getDocs(collection(db,"buku"));
+tabelBuku.innerHTML="";
 
-let html="";
+const snapshot = await getDocs(collection(db,"buku"));
 
-snap.forEach(b=>{
+document.getElementById("totalBuku").innerText = snapshot.size;
 
-let data = b.data();
+dataBuku=[];
 
-html += `
-<p>
-${data.judul} | Stok : ${data.stok}
-<button onclick="pinjam('${b.id}',${data.stok})">
-Pinjam
-</button>
-</p>
+snapshot.forEach(doc=>{
+
+const buku = doc.data();
+
+dataBuku.push(buku);
+
+tabelBuku.innerHTML += `
+<tr>
+<td>${buku.judul}</td>
+<td>${buku.penulis}</td>
+<td>${buku.stok}</td>
+<td>
+<button onclick="pinjamBuku('${buku.judul}')">Pinjam</button>
+</td>
+</tr>
 `;
 
 });
 
-document.getElementById("bukuList").innerHTML = html;
-
 }
 
-window.pinjam = async function(id,stok){
+loadBuku();
 
-if(stok<=0){
 
-alert("Stok habis");
+window.pinjamBuku = async function(judul){
 
-return;
+await addDoc(collection(db,"peminjaman"),{
 
-}
-
-await updateDoc(doc(db,"buku",id),{
-
-stok:stok-1
+judul,
+status:"dipinjam"
 
 });
 
-alert("Buku dipinjam");
+alert("Buku berhasil dipinjam");
 
-loadBuku();
+loadPinjaman();
 
 }
 
-loadBuku();
+
+async function loadPinjaman(){
+
+tabelPinjam.innerHTML="";
+
+const snapshot = await getDocs(collection(db,"peminjaman"));
+
+document.getElementById("totalPinjam").innerText = snapshot.size;
+
+snapshot.forEach(doc=>{
+
+const pinjam = doc.data();
+
+tabelPinjam.innerHTML += `
+<tr>
+<td>${pinjam.judul}</td>
+<td>${pinjam.status}</td>
+</tr>
+`;
+
+});
+
+}
+
+loadPinjaman();
+
+
+/* SEARCH BUKU */
+
+searchInput.addEventListener("keyup",()=>{
+
+const keyword = searchInput.value.toLowerCase();
+
+tabelBuku.innerHTML="";
+
+dataBuku
+.filter(b => b.judul.toLowerCase().includes(keyword))
+.forEach(b=>{
+
+tabelBuku.innerHTML += `
+<tr>
+<td>${b.judul}</td>
+<td>${b.penulis}</td>
+<td>${b.stok}</td>
+<td>
+<button onclick="pinjamBuku('${b.judul}')">Pinjam</button>
+</td>
+</tr>
+`;
+
+});
+
+});

@@ -1,22 +1,253 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
+<meta charset="UTF-8">
+<title>User Dashboard - Tunas Daud Digital Library</title>
 
-<title>Perpustakaan Tunas Daud</title>
+<style>
 
-<link rel="stylesheet" href="style.css">
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI;
+}
 
+body{
+display:flex;
+background:#0f172a;
+color:white;
+height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:230px;
+background:#020617;
+padding:20px;
+display:flex;
+flex-direction:column;
+}
+
+.sidebar h2{
+margin-bottom:30px;
+color:#38bdf8;
+}
+
+.sidebar a{
+text-decoration:none;
+color:#cbd5f5;
+padding:12px;
+margin-bottom:10px;
+border-radius:8px;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#1e293b;
+transform:translateX(5px);
+}
+
+/* MAIN */
+
+.main{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+/* TOPBAR */
+
+.topbar{
+background:#020617;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+/* CONTENT */
+
+.content{
+padding:20px;
+overflow:auto;
+}
+
+/* CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+margin-bottom:25px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:12px;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+.card span{
+font-size:24px;
+color:#38bdf8;
+}
+
+/* SEARCH */
+
+.search-box{
+margin-bottom:15px;
+}
+
+.search-box input{
+padding:10px;
+width:300px;
+border-radius:6px;
+border:none;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#1e293b;
+border-radius:10px;
+overflow:hidden;
+}
+
+th,td{
+padding:12px;
+text-align:left;
+}
+
+th{
+background:#020617;
+}
+
+tr:nth-child(even){
+background:#0f172a;
+}
+
+/* BUTTON */
+
+button{
+padding:7px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#38bdf8;
+color:black;
+transition:0.2s;
+}
+
+button:hover{
+background:#0ea5e9;
+transform:scale(1.05);
+}
+
+</style>
 </head>
 
 <body>
 
-<h2>Daftar Buku</h2>
+<div class="sidebar">
 
-<div id="bukuList"></div>
+<h2>📚 Library</h2>
+
+<a href="#">Dashboard</a>
+<a href="#">Cari Buku</a>
+<a href="#">Buku Dipinjam</a>
+<a href="#">Logout</a>
+
+</div>
+
+
+<div class="main">
+
+<div class="topbar">
+<h2>Dashboard Siswa</h2>
+<div id="namaUser">User</div>
+</div>
+
+
+<div class="content">
+
+<!-- STATISTIK -->
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Buku</h3>
+<span id="totalBuku">0</span>
+</div>
+
+<div class="card">
+<h3>Buku Dipinjam</h3>
+<span id="totalPinjam">0</span>
+</div>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="search-box">
+<input type="text" id="search" placeholder="Cari buku...">
+</div>
+
+
+<!-- DAFTAR BUKU -->
+
+<h3>Daftar Buku</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Judul</th>
+<th>Penulis</th>
+<th>Stok</th>
+<th>Aksi</th>
+</tr>
+</thead>
+
+<tbody id="tabelBuku"></tbody>
+
+</table>
+
+
+<br><br>
+
+<!-- BUKU DIPINJAM -->
+
+<h3>Buku Yang Saya Pinjam</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Judul</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="tabelPinjam"></tbody>
+
+</table>
+
+
+</div>
+</div>
 
 <script type="module" src="user.js"></script>
 
 </body>
-
 </html>

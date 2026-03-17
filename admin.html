@@ -1,36 +1,267 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
+<meta charset="UTF-8">
+<title>Admin Dashboard - Digital Library</title>
 
-<title>Dashboard Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<link rel="stylesheet" href="style.css">
+<style>
 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI;
+}
+
+body{
+display:flex;
+background:#0f172a;
+color:white;
+height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:230px;
+background:#020617;
+padding:20px;
+display:flex;
+flex-direction:column;
+}
+
+.sidebar h2{
+margin-bottom:30px;
+color:#38bdf8;
+}
+
+.sidebar a{
+text-decoration:none;
+color:#cbd5f5;
+padding:12px;
+margin-bottom:10px;
+border-radius:8px;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#1e293b;
+transform:translateX(5px);
+}
+
+/* MAIN */
+
+.main{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+/* TOPBAR */
+
+.topbar{
+background:#020617;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.topbar h1{
+font-size:20px;
+}
+
+/* CONTENT */
+
+.content{
+padding:20px;
+overflow:auto;
+}
+
+/* CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+margin-bottom:30px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:12px;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.card span{
+font-size:26px;
+color:#38bdf8;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#1e293b;
+border-radius:10px;
+overflow:hidden;
+}
+
+th,td{
+padding:12px;
+text-align:left;
+}
+
+th{
+background:#020617;
+}
+
+tr:nth-child(even){
+background:#0f172a;
+}
+
+button{
+padding:8px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#38bdf8;
+color:black;
+}
+
+button:hover{
+background:#0ea5e9;
+}
+
+/* FORM */
+
+.form-box{
+margin-top:25px;
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+}
+
+input{
+padding:10px;
+margin:5px;
+border:none;
+border-radius:6px;
+}
+
+</style>
 </head>
 
 <body>
 
-<h2>Dashboard Admin</h2>
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2>📚 Library</h2>
+
+<a href="#">Dashboard</a>
+<a href="#">Data Buku</a>
+<a href="#">Peminjaman</a>
+<a href="#">User</a>
+<a href="#">Logout</a>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+<div class="topbar">
+<h1>Admin Dashboard</h1>
+<div>Admin</div>
+</div>
+
+<div class="content">
+
+
+<!-- STATISTIK -->
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Buku</h3>
+<span id="totalBuku">0</span>
+</div>
+
+<div class="card">
+<h3>Total User</h3>
+<span id="totalUser">0</span>
+</div>
+
+<div class="card">
+<h3>Peminjaman Aktif</h3>
+<span id="totalPinjam">0</span>
+</div>
+
+</div>
+
+
+<!-- GRAFIK -->
+
+<canvas id="chartPinjam" height="80"></canvas>
+
+
+<br><br>
+
+<!-- TABEL BUKU -->
+
+<h2>Daftar Buku</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Judul</th>
+<th>Penulis</th>
+<th>Stok</th>
+<th>Aksi</th>
+</tr>
+</thead>
+
+<tbody id="tabelBuku"></tbody>
+
+</table>
+
+
+<!-- TAMBAH BUKU -->
+
+<div class="form-box">
 
 <h3>Tambah Buku</h3>
 
 <input id="judul" placeholder="Judul Buku">
-
-<input id="stok" placeholder="Stok">
+<input id="penulis" placeholder="Penulis">
+<input id="stok" placeholder="Stok" type="number">
 
 <button onclick="tambahBuku()">Tambah</button>
 
-<h3>Daftar Buku</h3>
+</div>
 
-<div id="listBuku"></div>
 
-<h3>Data Peminjaman</h3>
-
-<div id="dataPinjam"></div>
+</div>
+</div>
 
 <script type="module" src="admin.js"></script>
 
 </body>
-
 </html>

@@ -15,31 +15,12 @@ let dataBuku=[];
 
 async function loadBuku(){
 
-tabelBuku.innerHTML="";
-
 const snapshot = await getDocs(collection(db,"buku"));
 
-document.getElementById("totalBuku").innerText = snapshot.size;
-
-dataBuku=[];
+console.log("jumlah buku:",snapshot.size);
 
 snapshot.forEach(doc=>{
-
-const buku = doc.data();
-
-dataBuku.push(buku);
-
-tabelBuku.innerHTML += `
-<tr>
-<td>${buku.judul}</td>
-<td>${buku.penulis}</td>
-<td>${buku.stok}</td>
-<td>
-<button onclick="pinjamBuku('${buku.judul}')">Pinjam</button>
-</td>
-</tr>
-`;
-
+console.log(doc.data());
 });
 
 }

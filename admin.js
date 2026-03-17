@@ -7,41 +7,53 @@ getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 
-window.tambahBuku = async function(){
+const tabel = document.getElementById("tabelBuku");
 
-let judul = document.getElementById("judul").value;
-
-let stok = parseInt(document.getElementById("stok").value);
-
-await addDoc(collection(db,"buku"),{
-
-judul:judul,
-stok:stok
-
-});
-
-alert("Buku ditambahkan");
-
-loadBuku();
-
-}
 
 async function loadBuku(){
 
-let snap = await getDocs(collection(db,"buku"));
+tabel.innerHTML="";
 
-let html="";
+const snapshot = await getDocs(collection(db,"buku"));
 
-snap.forEach(doc=>{
+document.getElementById("totalBuku").innerText = snapshot.size;
 
-let d = doc.data();
+snapshot.forEach(doc=>{
 
-html += `<p>${d.judul} | Stok : ${d.stok}</p>`;
+const buku = doc.data();
+
+tabel.innerHTML += `
+<tr>
+<td>${buku.judul}</td>
+<td>${buku.penulis}</td>
+<td>${buku.stok}</td>
+<td><button>Update</button></td>
+</tr>
+`;
 
 });
-
-document.getElementById("listBuku").innerHTML = html;
 
 }
 
 loadBuku();
+
+
+window.tambahBuku = async function(){
+
+const judul = document.getElementById("judul").value;
+const penulis = document.getElementById("penulis").value;
+const stok = document.getElementById("stok").value;
+
+await addDoc(collection(db,"buku"),{
+
+judul,
+penulis,
+stok:Number(stok)
+
+});
+
+alert("Buku berhasil ditambah");
+
+loadBuku();
+
+}

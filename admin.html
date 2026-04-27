@@ -1,26 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>Admin</title>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="admin.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h2>📦 Inventaris</h2>
+<ul>
+<li class="active">Dashboard</li>
+<li onclick="showTambah()">Tambah Barang</li>
+<li onclick="logout()">Logout</li>
+</ul>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="topbar">
 <h1>Dashboard Admin</h1>
+<button onclick="toggleDark()">🌙</button>
+</div>
 
-<button onclick="logout()">Logout</button>
+<!-- CARDS -->
+<div class="cards">
+<div class="card"><h3>Total Barang</h3><p id="totalBarang">0</p></div>
+<div class="card"><h3>Dipinjam</h3><p id="totalPinjam">0</p></div>
+<div class="card"><h3>Stok Habis</h3><p id="stokHabis">0</p></div>
+</div>
 
+<!-- CHART -->
+<div class="chartBox">
+<canvas id="chart"></canvas>
+</div>
+
+<!-- TABLE -->
+<div class="tableBox">
+<h2>Daftar Barang</h2>
+<table>
+<thead>
+<tr><th>Nama</th><th>Jumlah</th><th>Status</th></tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+</div>
+
+</div>
+</div>
+
+<!-- MODAL TAMBAH -->
+<div id="modal" class="modal">
+<div class="modal-content">
 <h2>Tambah Barang</h2>
-
 <input id="namaBarang" placeholder="Nama Barang">
 <input id="jumlahBarang" placeholder="Jumlah">
-
-<button onclick="tambahBarang()">Tambah</button>
-
-<h2>Daftar Barang</h2>
-<div id="list"></div>
+<button onclick="tambahBarang()">Simpan</button>
+<button onclick="tutupModal()">Tutup</button>
+</div>
+</div>
 
 <script type="module" src="admin.js"></script>
-
 </body>
 </html>

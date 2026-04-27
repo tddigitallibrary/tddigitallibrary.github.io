@@ -41,6 +41,7 @@ let jumlah = document.getElementById("jumlahBarang").value;
 
 await addDoc(collection(db,"barang"),{
 nama:nama,
+jenis,
 jumlah:parseInt(jumlah)
 });
 
@@ -67,8 +68,13 @@ if(data.jumlah==0) habis++;
 table.innerHTML += `
 <tr>
 <td>${data.nama}</td>
+<td>${data.jenis || "-"}</td>
 <td>${data.jumlah}</td>
-<td>${status}</td>
+<td>
+<button onclick="openModal('${d.id}', ${JSON.stringify(data).replace(/"/g,'&quot;')})">
+Edit
+</button>
+</td>
 </tr>
 `;
 });

@@ -1,11 +1,34 @@
-import { db } from "./firebase.js";
+import { db, auth } from "./firebase.js";
 
 import {
 collection,
 onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+import { signOut } from
+"https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
+
+// LOGOUT
+window.logout = async function(){
+
+try{
+await signOut(auth);
+window.location.href = "index.html";
+}catch(e){
+console.log(e);
+}
+
+};
+
+
+// PINJAM (dummy dulu)
+window.pinjam = function(id,nama,jumlah){
+alert("Pinjam: " + nama);
+};
+
+
+// LOAD DATA
 function load(){
 
 const list = document.getElementById("list");

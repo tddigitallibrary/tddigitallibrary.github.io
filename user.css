@@ -1,18 +1,18 @@
 body{
-    font-family:Segoe UI;
-    background:#f4f6f9;
-    padding:20px;
-    }
+font-family:Segoe UI;
+background:#f4f6f9;
+padding:20px;
+}
     
-    .item{
-    background:white;
-    padding:15px;
-    margin-bottom:10px;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    transition:0.3s;
-    }
+.item{
+background:white;
+padding:15px;
+margin-bottom:10px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+transition:0.3s;
+}
     
-    .item:hover{
-    transform:translateY(-3px);
-    }
+.item:hover{
+transform:translateY(-3px);
+}

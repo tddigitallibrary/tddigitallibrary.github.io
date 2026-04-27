@@ -40,6 +40,7 @@ let user = auth.currentUser;
 
 // 1. simpan ke koleksi peminjaman
 await addDoc(collection(db,"peminjaman"),{
+nama_siswa: user,
 nama_user: user.email,
 barang: nama,
 barangID: id,

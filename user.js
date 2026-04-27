@@ -40,12 +40,13 @@ let user = auth.currentUser;
 
 // 1. simpan ke koleksi peminjaman
 await addDoc(collection(db,"peminjaman"),{
-nama_siswa: user,
-nama_user: user.email,
-barang: nama,
+nama: user.displayName || "User",
+email: user.email,
+barang: namaBarang,
 barangID: id,
-tanggal_pinjam: new Date().toLocaleDateString(),
-status: "dipinjam"
+jumlah: qty,
+status: "dipinjam",
+tanggal: new Date().toLocaleDateString()
 });
 
 // 2. kurangi stok barang

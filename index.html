@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Inventaris</title>
+
+<style>
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI;
+}
+
+/* BODY */
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#6366f1,#06b6d4);
+}
+
+/* CONTAINER */
+.container{
+display:flex;
+width:900px;
+height:550px;
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* LEFT PANEL */
+.left{
+flex:1;
+background:linear-gradient(135deg,#4f46e5,#06b6d4);
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:30px;
+}
+
+.left h1{
+font-size:32px;
+margin-bottom:10px;
+}
+
+/* RIGHT PANEL */
+.right{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+/* TOGGLE BUTTON */
+.toggle{
+display:flex;
+margin-bottom:20px;
+gap:10px;
+}
+
+.toggle button{
+padding:10px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#eee;
+}
+
+.toggle button.active{
+background:#6366f1;
+color:white;
+}
+
+/* FORM WRAPPER */
+.form-wrapper{
+width:80%;
+overflow:hidden;
+}
+
+/* FORM CONTAINER */
+.form-container{
+display:flex;
+width:200%;
+transition:0.5s;
+}
+
+/* FORM */
+.form{
+width:50%;
+padding:10px;
+display:flex;
+flex-direction:column;
+gap:12px;
+animation:fade 0.3s;
+}
+
+.form h2{
+text-align:center;
+margin-bottom:10px;
+}
+
+/* INPUT */
+input,select{
+padding:12px;
+border-radius:8px;
+border:1px solid #ccc;
+outline:none;
+}
+
+/* BUTTON */
+.btn{
+padding:12px;
+border:none;
+border-radius:8px;
+background:#6366f1;
+color:white;
+cursor:pointer;
+transition:0.2s;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* ANIMASI */
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* POSISI */
+.form-container.login{
+transform:translateX(0%);
+}
+
+.form-container.register{
+transform:translateX(-50%);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+<h1>📦 Inventaris Kelas</h1>
+<p>Kelola barang kelas dengan mudah & modern</p>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<!-- TOGGLE -->
+<div class="toggle">
+<button id="btnLogin" class="active">Login</button>
+<button id="btnRegister">Register</button>
+</div>
+
+<!-- FORM -->
+<div class="form-wrapper">
+
+<div class="form-container login" id="formContainer">
+
+<!-- LOGIN -->
+<div class="form">
+<h2>Login</h2>
+
+<input type="email" id="loginEmail" placeholder="Email">
+<input type="password" id="loginPassword" placeholder="Password">
+
+<button class="btn" onclick="login()">Masuk</button>
+
+</div>
+
+<!-- REGISTER -->
+<div class="form">
+<h2>Register</h2>
+
+<input type="text" id="nama" placeholder="Nama">
+<input type="email" id="regEmail" placeholder="Email">
+<input type="password" id="regPassword" placeholder="Password">
+
+<select id="role">
+<option value="user">Siswa</option>
+<option value="admin">Admin</option>
+</select>
+
+<button class="btn" onclick="register()">Daftar</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+// TOGGLE FORM
+const container = document.getElementById("formContainer");
+const btnLogin = document.getElementById("btnLogin");
+const btnRegister = document.getElementById("btnRegister");
+
+btnRegister.onclick = function(){
+container.classList.remove("login");
+container.classList.add("register");
+
+btnRegister.classList.add("active");
+btnLogin.classList.remove("active");
+};
+
+btnLogin.onclick = function(){
+container.classList.remove("register");
+container.classList.add("login");
+
+btnLogin.classList.add("active");
+btnRegister.classList.remove("active");
+};
+
+
+// DUMMY FUNCTION (nanti sambung Firebase)
+function login(){
+alert("Login diklik");
+}
+
+function register(){
+alert("Register diklik");
+}
+
+</script>
+
+</body>
+</html>

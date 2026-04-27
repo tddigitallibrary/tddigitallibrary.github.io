@@ -81,13 +81,22 @@ let data = doc.data();
 list.innerHTML += `
 <div class="card">
 
-<div class="badge">${data.jenis}</div>
+<div class="badge">${jenis}</div>
 
 <h3>${data.nama}</h3>
-<p>Jumlah: ${data.jumlah}</p>
 
-<button onclick="pinjam('${doc.id}','${data.nama}',${data.jumlah})">
+<p style="color:${warna}; font-weight:bold;">
+${isHabis ? "❌ Habis" : "✔ Tersedia"} (${data.jumlah})
+</p>
+
+<input type="number" min="1" max="${data.jumlah}" value="1" id="qty-${doc.id}">
+
+<button 
+${isHabis ? "disabled" : ""} 
+onclick="pinjam('${doc.id}','${data.nama}',${data.jumlah})">
+
 Pinjam
+
 </button>
 
 </div>

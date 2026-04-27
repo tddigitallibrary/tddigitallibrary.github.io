@@ -105,21 +105,17 @@ box-shadow:0 10px 30px rgba(0,0,0,0.1);
 table{
 width:100%;
 border-collapse:collapse;
-table-layout:fixed;
+margin-top:20px;
 }
 
 th, td{
-text-align:left;
 padding:12px;
+border-bottom:1px solid #ddd;
+text-align:left;
 }
 
 th{
 background:#f1f5f9;
-}
-
-th,td{
-padding:12px;
-border-bottom:1px solid #ddd;
 }
 
 /* BUTTON */
@@ -172,6 +168,8 @@ to{opacity:1;}
 <h2>📦 Inventaris</h2>
 
 <div class="menu" onclick="openModal()">+ Tambah Barang</div>
+<div class="menu" onclick="showPage('barang')">📦 Barang</div>
+<div class="menu" onclick="showPage('peminjaman')">📚 Peminjaman</div>
 <div class="menu" onclick="toggleDark()">🌙 Dark Mode</div>
 <div class="menu" onclick="logout()">Logout</div>
 </div>
@@ -190,10 +188,8 @@ to{opacity:1;}
 <div class="card"><h3>Stok Habis</h3><p id="stokHabis">0</p></div>
 </div>
 
-<!-- TABLE -->
-<div class="table-box">
-<h2>Data Barang</h2>
-
+<!-- HALAMAN BARANG -->
+<div id="barangPage">
 <table>
 <thead>
 <tr>
@@ -203,14 +199,28 @@ to{opacity:1;}
 <th>Aksi</th>
 </tr>
 </thead>
-
 <tbody id="table"></tbody>
+</table>
+</div>
+
+
+<!-- HALAMAN PEMINJAMAN -->
+<div id="peminjamanPage" style="display:none">
+
+<table>
+<thead>
+<tr>
+<th>Nama</th>
+<th>Email</th>
+<th>Barang</th>
+<th>Jumlah</th>
+</tr>
+</thead>
+
+<tbody id="tablePinjam"></tbody>
 
 </table>
 
-</div>
-
-</div>
 </div>
 
 <!-- MODAL -->

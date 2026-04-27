@@ -1,23 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>User</title>
-<link rel="stylesheet" href="user.css">
+<title>User Inventaris</title>
+
+<style>
+
+body{
+font-family:Poppins;
+background:#f4f6f9;
+padding:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="topbar">
-<h1>Inventaris Kelas</h1>
+<h1>📦 Inventaris Kelas</h1>
+
 <button onclick="logout()">Logout</button>
-</div>
 
-<h2>Daftar Barang</h2>
-<div id="list"></div>
-
-<h2>Barang Dipinjam</h2>
-<div id="riwayat"></div>
+<div class="grid" id="list"></div>
 
 <script type="module" src="user.js"></script>
+
 </body>
 </html>

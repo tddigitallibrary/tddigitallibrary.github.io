@@ -48,6 +48,19 @@ jumlah:parseInt(jumlah)
 loadData();
 };
 
+window.showPage = function(page){
+
+    document.getElementById("barangPage").style.display = "none";
+    document.getElementById("peminjamanPage").style.display = "none";
+    
+    if(page === "barang"){
+    document.getElementById("barangPage").style.display = "block";
+    }else{
+    document.getElementById("peminjamanPage").style.display = "block";
+    }
+    
+    };
+
 // LOAD DATA
 async function loadData(){
 
@@ -118,7 +131,33 @@ updateChart(dataMap);
 
 }
 
+function loadPeminjaman(){
 
+const table = document.getElementById("tablePinjam");
+
+onSnapshot(collection(db,"peminjaman"), (snapshot)=>{
+
+table.innerHTML = "";
+
+snapshot.forEach(doc=>{
+
+let data = doc.data();
+
+table.innerHTML += `
+<tr>
+<td>${data.nama || "-"}</td>
+<td>${data.email || "-"}</td>
+<td>${data.barang || "-"}</td>
+<td>${data.jumlah || 1}</td>
+</tr>
+`;
+
+});
+
+});
+
+}
+loadPeminjaman();
 // ========================
 // UPDATE CHART
 // ========================
@@ -188,18 +227,18 @@ nama,jenis,jumlah
 tutup();
 };
 window.toggleDark = () =>{
-    document.body.classList.toggle("dark");
-    };
+document.body.classList.toggle("dark");
+};
     
-    window.search = function(keyword){
+window.search = function(keyword){
     
-    let rows = document.querySelectorAll("#table tr");
+let rows = document.querySelectorAll("#table tr");
     
-    rows.forEach(r=>{
-    let text = r.innerText.toLowerCase();
-    r.style.display = text.includes(keyword.toLowerCase())
-    ? "" : "none";
-    });
+rows.forEach(r=>{
+let text = r.innerText.toLowerCase();
+r.style.display = text.includes(keyword.toLowerCase())
+? "" : "none";
+});
     
-    };
+};
 loadData();

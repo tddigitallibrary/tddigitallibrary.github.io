@@ -145,7 +145,7 @@ let data = doc.data();
 
 table.innerHTML += `
 <tr>
-<td>${data.nama}</td>
+<td>${data.nama || "-"}</td>
 <td>${data.nama_user || "-"}</td>
 <td>${data.barang || "-"}</td>
 <td>${data.jumlah || 1}</td>

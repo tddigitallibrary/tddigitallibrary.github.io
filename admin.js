@@ -145,8 +145,8 @@ let data = doc.data();
 
 table.innerHTML += `
 <tr>
-<td>${data.nama || "-"}</td>
-<td>${data.email || "-"}</td>
+<td>${data.nama_user || "-"}</td>
+<td>${data.nama_user || "-"}</td>
 <td>${data.barang || "-"}</td>
 <td>${data.jumlah || 1}</td>
 </tr>
@@ -219,8 +219,14 @@ await updateDoc(doc(db,"barang",editId),{
 nama,jenis,jumlah
 });
 }else{
-await addDoc(collection(db,"barang"),{
-nama,jenis,jumlah
+await addDoc(collection(db,"peminjaman"),{
+nama: user.displayName || "User",
+email: user.email,
+barang: namaBarang,
+barangID: id,
+jumlah: 1,
+status: "dipinjam",
+tanggal: new Date().toLocaleDateString()
 });
 }
 

@@ -144,4 +144,43 @@ data:values
 // INIT
 loadGrafik();
 
+let editId = null;
+
+// buka modal
+window.openModal = function(id=null,data=null){
+document.getElementById("modal").style.display="block";
+
+if(data){
+editId = id;
+document.getElementById("nama").value = data.nama;
+document.getElementById("jenis").value = data.jenis;
+document.getElementById("jumlah").value = data.jumlah;
+}else{
+editId = null;
+}
+};
+
+window.tutup = function(){
+document.getElementById("modal").style.display="none";
+};
+
+// SIMPAN (ADD / UPDATE)
+window.simpan = async function(){
+
+let nama = document.getElementById("nama").value;
+let jenis = document.getElementById("jenis").value;
+let jumlah = parseInt(document.getElementById("jumlah").value);
+
+if(editId){
+await updateDoc(doc(db,"barang",editId),{
+nama,jenis,jumlah
+});
+}else{
+await addDoc(collection(db,"barang"),{
+nama,jenis,jumlah
+});
+}
+
+tutup();
+};
 loadData();

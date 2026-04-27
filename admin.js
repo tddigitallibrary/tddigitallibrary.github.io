@@ -1,24 +1,37 @@
-import { auth, db } from "./firebase.js";
+import { db, auth } from "./firebase.js";
 
 import {
 collection,
-addDoc,
-getDocs
+getDocs,
+addDoc
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 import { signOut } from
 "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 
-// LOGOUT
-window.logout = async function(){
-await signOut(auth);
-window.location.href = "index.html";
+// DARK MODE
+window.toggleDark = () => {
+document.body.classList.toggle("dark");
 };
 
+// MODAL
+window.showTambah = () => {
+document.getElementById("modal").style.display="block";
+};
+
+window.tutupModal = () => {
+document.getElementById("modal").style.display="none";
+};
+
+// LOGOUT
+window.logout = async () => {
+await signOut(auth);
+location.href="index.html";
+};
 
 // TAMBAH BARANG
-window.tambahBarang = async function(){
+window.tambahBarang = async () => {
 
 let nama = document.getElementById("namaBarang").value;
 let jumlah = document.getElementById("jumlahBarang").value;
@@ -29,27 +42,36 @@ jumlah:parseInt(jumlah)
 });
 
 loadData();
-
 };
-
 
 // LOAD DATA
 async function loadData(){
 
-let list = document.getElementById("list");
-list.innerHTML="";
+let table = document.getElementById("table");
+table.innerHTML="";
 
-let snapshot = await getDocs(collection(db,"barang"));
+let total=0, habis=0;
 
-snapshot.forEach((d)=>{
+let snap = await getDocs(collection(db,"barang"));
 
-let data = d.data();
+snap.forEach(d=>{
+let data=d.data();
+total++;
 
-list.innerHTML += `
-<div>${data.nama} (${data.jumlah})</div>
+let status = data.jumlah==0 ? "Habis" : "Available";
+if(data.jumlah==0) habis++;
+
+table.innerHTML += `
+<tr>
+<td>${data.nama}</td>
+<td>${data.jumlah}</td>
+<td>${status}</td>
+</tr>
 `;
-
 });
+
+document.getElementById("totalBarang").innerText=total;
+document.getElementById("stokHabis").innerText=habis;
 
 }
 

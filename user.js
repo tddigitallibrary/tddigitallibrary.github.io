@@ -20,9 +20,16 @@ let data = doc.data();
 
 list.innerHTML += `
 <div class="card">
+
+<div class="badge">${data.jenis}</div>
+
 <h3>${data.nama}</h3>
-<p>Jenis: ${data.jenis}</p>
 <p>Jumlah: ${data.jumlah}</p>
+
+<button onclick="pinjam('${doc.id}','${data.nama}',${data.jumlah})">
+Pinjam
+</button>
+
 </div>
 `;
 

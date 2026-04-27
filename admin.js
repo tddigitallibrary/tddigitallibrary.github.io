@@ -1,6 +1,11 @@
 import { db, auth } from "./firebase.js";
 
 import {
+    collection,
+    onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+import {
 collection,
 getDocs,
 addDoc
@@ -73,6 +78,70 @@ table.innerHTML += `
 document.getElementById("totalBarang").innerText=total;
 document.getElementById("stokHabis").innerText=habis;
 
+};
+
+let chart;
+
+// ========================
+// LOAD GRAFIK REALTIME
+// ========================
+function loadGrafik(){
+
+onSnapshot(collection(db,"peminjaman"), (snapshot)=>{
+
+let dataMap = {};
+
+snapshot.forEach(d=>{
+
+let data = d.data();
+
+// hanya hitung yang dipinjam
+if(data.status === "dipinjam"){
+
+if(dataMap[data.barang]){
+dataMap[data.barang]++;
+}else{
+dataMap[data.barang] = 1;
 }
+
+}
+
+});
+
+updateChart(dataMap);
+
+});
+
+}
+
+
+// ========================
+// UPDATE CHART
+// ========================
+function updateChart(data){
+
+let labels = Object.keys(data);
+let values = Object.values(data);
+
+if(chart){
+chart.destroy();
+}
+
+chart = new Chart(document.getElementById("chart"),{
+type:"bar",
+data:{
+labels:labels,
+datasets:[{
+label:"Jumlah Dipinjam",
+data:values
+}]
+}
+});
+
+}
+
+
+// INIT
+loadGrafik();
 
 loadData();

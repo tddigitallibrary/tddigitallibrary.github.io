@@ -1,4 +1,4 @@
-import { auth, db } from "./firebase.js";
+import { db, auth } from "./firebase.js";
 
 import {
 collection,
@@ -10,29 +10,30 @@ import { signOut } from
 
 
 // LOGOUT
-window.logout = async function(){
+window.logout = async ()=>{
 await signOut(auth);
-window.location.href = "index.html";
+location.href="index.html";
 };
 
 
 // LOAD BARANG
-async function loadData(){
+async function load(){
 
-let list = document.getElementById("list");
+let list=document.getElementById("list");
 
-let snapshot = await getDocs(collection(db,"barang"));
+let snap=await getDocs(collection(db,"barang"));
 
-snapshot.forEach((d)=>{
-
-let data = d.data();
+snap.forEach(d=>{
+let data=d.data();
 
 list.innerHTML += `
-<div>${data.nama} (${data.jumlah})</div>
+<div class="item">
+${data.nama} (${data.jumlah})
+<button>Pinjam</button>
+</div>
 `;
-
 });
 
 }
 
-loadData();
+load();

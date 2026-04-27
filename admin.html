@@ -2,9 +2,128 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Admin Dashboard</title>
-<link rel="stylesheet" href="admin.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Admin Inventaris</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+
+/* GLOBAL */
+body{
+margin:0;
+font-family:Poppins;
+background:#f4f6f9;
+}
+
+.layout{
+display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:230px;
+background:#111827;
+color:white;
+height:100vh;
+padding:20px;
+}
+
+.sidebar h2{
+margin-bottom:20px;
+}
+
+.sidebar div{
+margin:10px 0;
+cursor:pointer;
+padding:10px;
+border-radius:6px;
+}
+
+.sidebar div:hover{
+background:#1f2937;
+}
+
+/* MAIN */
+.main{
+flex:1;
+padding:20px;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+}
+
+/* CARD */
+.cards{
+display:flex;
+gap:15px;
+margin:20px 0;
+}
+
+.card{
+flex:1;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* TABLE */
+.table{
+background:white;
+padding:20px;
+border-radius:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+button{
+padding:8px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#6366f1;
+color:white;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+}
+
+.modal-box{
+background:white;
+padding:20px;
+width:300px;
+margin:100px auto;
+border-radius:10px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+input{
+padding:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+</style>
 </head>
 
 <body>
@@ -14,11 +133,9 @@
 <!-- SIDEBAR -->
 <div class="sidebar">
 <h2>📦 Inventaris</h2>
-<ul>
-<li class="active">Dashboard</li>
-<li onclick="showTambah()">Tambah Barang</li>
-<li onclick="logout()">Logout</li>
-</ul>
+
+<div onclick="openModal()">+ Tambah Barang</div>
+<div onclick="logout()">Logout</div>
 </div>
 
 <!-- MAIN -->
@@ -26,46 +143,47 @@
 
 <div class="topbar">
 <h1>Dashboard Admin</h1>
-<button onclick="toggleDark()">🌙</button>
-</div>
-
-<!-- CARDS -->
-<div class="cards">
-<div class="card"><h3>Total Barang</h3><p id="totalBarang">0</p></div>
-<div class="card"><h3>Dipinjam</h3><p id="totalPinjam">0</p></div>
-<div class="card"><h3>Stok Habis</h3><p id="stokHabis">0</p></div>
-</div>
-
-<!-- CHART -->
-<div class="chartBox">
-<canvas id="chart"></canvas>
 </div>
 
 <!-- TABLE -->
-<div class="tableBox">
-<h2>Daftar Barang</h2>
+<div class="table">
+<h2>Data Barang</h2>
+
 <table>
 <thead>
-<tr><th>Nama</th><th>Jumlah</th><th>Status</th></tr>
+<tr>
+<th>Nama</th>
+<th>Jenis</th>
+<th>Jumlah</th>
+<th>Aksi</th>
+</tr>
 </thead>
+
 <tbody id="table"></tbody>
+
 </table>
 </div>
 
 </div>
 </div>
 
-<!-- MODAL TAMBAH -->
+<!-- MODAL -->
 <div id="modal" class="modal">
-<div class="modal-content">
-<h2>Tambah Barang</h2>
-<input id="namaBarang" placeholder="Nama Barang">
-<input id="jumlahBarang" placeholder="Jumlah">
-<button onclick="tambahBarang()">Simpan</button>
-<button onclick="tutupModal()">Tutup</button>
+<div class="modal-box">
+
+<h3>Tambah / Edit Barang</h3>
+
+<input id="nama" placeholder="Nama Barang">
+<input id="jenis" placeholder="Jenis Barang">
+<input id="jumlah" type="number" placeholder="Jumlah">
+
+<button onclick="simpan()">Simpan</button>
+<button onclick="tutup()">Tutup</button>
+
 </div>
 </div>
 
 <script type="module" src="admin.js"></script>
+
 </body>
 </html>

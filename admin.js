@@ -50,16 +50,16 @@ loadData();
 
 window.showPage = function(page){
 
-    document.getElementById("barangPage").style.display = "none";
-    document.getElementById("peminjamanPage").style.display = "none";
+document.getElementById("barangPage").style.display = "none";
+document.getElementById("peminjamanPage").style.display = "none";
     
-    if(page === "barang"){
-    document.getElementById("barangPage").style.display = "block";
-    }else{
-    document.getElementById("peminjamanPage").style.display = "block";
-    }
+if(page === "barang"){
+document.getElementById("barangPage").style.display = "block";
+}else{
+document.getElementById("peminjamanPage").style.display = "block";
+}
     
-    };
+};
 
 // LOAD DATA
 async function loadData(){
@@ -208,32 +208,51 @@ document.getElementById("modal").style.display="none";
 };
 
 // SIMPAN (ADD / UPDATE)
-window.simpan = async function(){
+window.pinjam = async function(id,namaBarang,stok){
 
-let nama = document.getElementById("nama").value;
-let jenis = document.getElementById("jenis").value;
-let jumlah = parseInt(document.getElementById("jumlah").value);
+let qty = parseInt(document.getElementById(`qty-${id}`).value);
 
-if(editId){
-await updateDoc(doc(db,"barang",editId),{
-nama,jenis,jumlah
-});
-}else{
+// validasi
+if(qty <= 0){
+alert("Jumlah tidak valid!");
+return;
+}
+
+if(qty > stok){
+alert("Stok tidak cukup!");
+return;
+}
+
+try{
+
+let user = auth.currentUser;
+
+// 1. simpan ke peminjaman
 await addDoc(collection(db,"peminjaman"),{
 nama: user.displayName || "User",
 email: user.email,
 barang: namaBarang,
 barangID: id,
-jumlah: 1,
+jumlah: qty,
 status: "dipinjam",
 tanggal: new Date().toLocaleDateString()
 });
+
+// 2. kurangi stok
+let ref = doc(db,"barang",id);
+let snap = await getDoc(ref);
+
+await updateDoc(ref,{
+jumlah: snap.data().jumlah - qty
+});
+
+alert("Berhasil meminjam!");
+
+}catch(e){
+console.log(e);
+alert("Gagal meminjam");
 }
 
-tutup();
-};
-window.toggleDark = () =>{
-document.body.classList.toggle("dark");
 };
     
 window.search = function(keyword){

@@ -2,7 +2,6 @@ import { db, auth } from "./firebase.js";
 
 import {
 collection,
-onSnapshot,
 addDoc,
 updateDoc,
 doc,
@@ -29,45 +28,43 @@ console.log(e);
 // PINJAM (dummy dulu)
 window.pinjam = async function(id,nama,jumlah){
 
-    if(jumlah <= 0){
-    alert("Stok habis!");
-    return;
-    }
-    
-    try{
-    
-    // ambil user login
-    let user = auth.currentUser;
-    
-    // 1. simpan ke koleksi peminjaman
-    await addDoc(collection(db,"peminjaman"),{
-    nama_user: user.email,
-    barang: nama,
-    barangID: id,
-    tanggal_pinjam: new Date().toLocaleDateString(),
-    status: "dipinjam"
-    });
-    
-    // 2. kurangi stok barang
-    let ref = doc(db,"barang",id);
-    let snap = await getDoc(ref);
-    
-    let stokSekarang = snap.data().jumlah;
-    
-    await updateDoc(ref,{
-    jumlah: stokSekarang - 1
-    });
-    
-    alert("Berhasil meminjam!");
-    
-    }catch(e){
-    console.log(e);
-    alert("Gagal meminjam");
-    }
-    
-    };
+if(jumlah <= 0){
+alert("Stok habis!");
+return;
+}
 
+try{
 
+// ambil user login
+let user = auth.currentUser;
+
+// 1. simpan ke koleksi peminjaman
+await addDoc(collection(db,"peminjaman"),{
+nama_user: user.email,
+barang: nama,
+barangID: id,
+tanggal_pinjam: new Date().toLocaleDateString(),
+status: "dipinjam"
+});
+
+// 2. kurangi stok barang
+let ref = doc(db,"barang",id);
+let snap = await getDoc(ref);
+
+let stokSekarang = snap.data().jumlah;
+
+await updateDoc(ref,{
+jumlah: stokSekarang - 1
+});
+
+alert("Berhasil meminjam!");
+
+}catch(e){
+console.log(e);
+alert("Gagal meminjam");
+}
+
+};
 // LOAD DATA
 function load(){
 

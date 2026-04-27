@@ -183,4 +183,19 @@ nama,jenis,jumlah
 
 tutup();
 };
+window.toggleDark = () =>{
+document.body.classList.toggle("dark");
+};
+
+window.search = function(keyword){
+
+let rows = document.querySelectorAll("#table tr");
+
+rows.forEach(r=>{
+let text = r.innerText.toLowerCase();
+r.style.display = text.includes(keyword.toLowerCase())
+? "" : "none";
+});
+
+};
 loadData();

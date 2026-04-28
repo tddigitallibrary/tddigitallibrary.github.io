@@ -80,6 +80,11 @@ snapshot.forEach(doc=>{
 
 let data = doc.data();
 
+let jenis = data.jenis || "Umum";
+
+let isHabis = data.jumlah == 0;
+let warna = isHabis ? "red" : "#10b981";
+
 list.innerHTML += `
 <div class="card">
 

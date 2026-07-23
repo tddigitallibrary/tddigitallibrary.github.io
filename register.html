@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Registrasi Siswa</title>
+<title>Registrasi</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -14,54 +13,86 @@
 
 <body>
 
-<div class="login-box">
+<div class="container">
 
-<h2>Registrasi Siswa</h2>
+    <!-- KIRI -->
+    <div class="left-panel">
 
-<input 
-type="text" 
-id="nama" 
-placeholder="Nama Lengkap"
-required
->
+        <div class="hero">
 
-<input 
-type="email" 
-id="email" 
-placeholder="Email"
-required
->
+            <h1>📦 Inventaris Kelas</h1>
 
-<input 
-type="password" 
-id="password" 
-placeholder="Password"
-required
->
+            <p>Kelola barang kelas dengan mudah & modern</p>
 
-<button onclick="register()">DAFTAR</button>
+        </div>
 
-<p style="margin-top:15px;">
-Sudah punya akun? 
-<span onclick="goLogin()" style="cursor:pointer;color:#06b6d4;">
-Login
-</span>
-</p>
+    </div>
+
+    <!-- KANAN -->
+    <div class="right-panel">
+
+        <div class="tab">
+
+            <button onclick="location.href='index.html'">
+                Login
+            </button>
+
+            <button class="active">
+                Register
+            </button>
+
+        </div>
+
+        <h2>Registrasi</h2>
+
+        <input
+            type="text"
+            id="nama"
+            placeholder="Nama Lengkap"
+        >
+
+        <select id="kelas">
+
+            <option value="">Pilih Kelas</option>
+
+            <option>X 1</option>
+            <option>X 2</option>
+            <option>X 3</option>
+            <option>X 4</option>
+
+            <option>XI IPA 1</option>
+            <option>XI IPA 2</option>
+            <option>XI IPS 1</option>
+            <option>XI IPS 2</option>
+
+            <option>XII IPA 1</option>
+            <option>XII IPA 2</option>
+            <option>XII IPS 1</option>
+            <option>XII IPS 2</option>
+
+        </select>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
+
+        <button onclick="register()">
+            Daftar
+        </button>
+
+    </div>
 
 </div>
 
-
 <script type="module" src="register.js"></script>
-
-<script>
-
-function goLogin(){
-
-window.location="index.html"
-
-}
-
-</script>
 
 </body>
 </html>

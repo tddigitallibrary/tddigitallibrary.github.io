@@ -1,125 +1,316 @@
+// ======================================================
+// IMPORT
+// ======================================================
+
+// firebase
 import { db, auth } from "./firebase.js";
 
-import {
-collection,
-getDocs,
-addDoc,
-onSnapshot,
-updateDoc,
-doc
-} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+// firestore
+import{
 
-import { signOut } from
+collection,
+addDoc,
+getDocs,
+getDoc,
+doc,
+updateDoc,
+deleteDoc,
+onSnapshot
+
+} from
+"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// auth
+import{
+
+signOut
+
+} from
 "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 
-// DARK MODE
-window.toggleDark = () => {
-document.body.classList.toggle("dark");
-};
 
-// MODAL
-window.showTambah = () => {
-document.getElementById("modal").style.display="block";
-};
-
-window.tutupModal = () => {
-document.getElementById("modal").style.display="none";
-};
-
-// LOGOUT
-window.logout = async () => {
-await signOut(auth);
-location.href="index.html";
-};
-
-// TAMBAH BARANG
-window.tambahBarang = async () => {
-
-let nama = document.getElementById("namaBarang").value;
-let jumlah = document.getElementById("jumlahBarang").value;
-
-await addDoc(collection(db,"barang"),{
-nama:nama,
-jenis,
-jumlah:parseInt(jumlah)
-});
-
-loadData();
-};
-
-window.showPage = function(page){
-
-document.getElementById("barangPage").style.display = "none";
-document.getElementById("peminjamanPage").style.display = "none";
-    
-if(page === "barang"){
-document.getElementById("barangPage").style.display = "block";
-}else{
-document.getElementById("peminjamanPage").style.display = "block";
-}
-    
-};
-
-// LOAD DATA
-async function loadData(){
-
-let table = document.getElementById("table");
-table.innerHTML="";
-
-let total=0, habis=0;
-
-let snap = await getDocs(collection(db,"barang"));
-
-snap.forEach(d=>{
-let data=d.data();
-total++;
-
-let status = data.jumlah==0 ? "Habis" : "Available";
-if(data.jumlah==0) habis++;
-
-table.innerHTML += `
-<tr>
-<td>${data.nama}</td>
-<td>${data.jenis || "-"}</td>
-<td>${data.jumlah}</td>
-<td>
-<button onclick="openModal('${d.id}', ${JSON.stringify(data).replace(/"/g,'&quot;')})">
-Edit
-</button>
-</td>
-</tr>
-`;
-});
-
-document.getElementById("totalBarang").innerText=total;
-document.getElementById("stokHabis").innerText=habis;
-
-};
+// ======================================================
+// VARIABEL GLOBAL
+// ======================================================
 
 let chart;
 
-// ========================
-// LOAD GRAFIK REALTIME
-// ========================
+let editId = null;
+
+
+
+// ======================================================
+// DARK MODE
+// ======================================================
+
+window.toggleDark=function(){
+
+document.body.classList.toggle("dark");
+
+}
+
+
+
+// ======================================================
+// LOGOUT
+// ======================================================
+
+window.logout=async function(){
+
+await signOut(auth);
+
+location.href="index.html";
+
+}
+
+
+
+// ======================================================
+// SIDEBAR
+// ======================================================
+
+window.showPage=function(page){
+
+document.querySelectorAll("main section").forEach(sec=>{
+
+sec.style.display="none";
+
+});
+
+document.getElementById(page).style.display="block";
+
+}
+
+
+
+// ======================================================
+// MODAL
+// ======================================================
+
+window.openModal=function(id=null,data=null){
+
+document.getElementById("modal").style.display="block";
+
+if(data){
+
+editId=id;
+
+document.getElementById("nama").value=data.nama;
+
+document.getElementById("jenis").value=data.jenis;
+
+document.getElementById("jumlah").value=data.jumlah;
+
+}else{
+
+editId=null;
+
+document.getElementById("nama").value="";
+
+document.getElementById("jenis").selectedIndex=0;
+
+document.getElementById("jumlah").value=1;
+
+}
+
+}
+
+
+
+window.tutup=function(){
+
+document.getElementById("modal").style.display="none";
+
+editId=null;
+
+}
+
+
+
+// ======================================================
+// CRUD BARANG
+// ======================================================
+
+window.simpan=async function(){
+
+let nama=document.getElementById("nama").value;
+
+let jenis=document.getElementById("jenis").value;
+
+let jumlah=parseInt(document.getElementById("jumlah").value);
+
+if(nama==""){
+
+alert("Nama barang belum diisi");
+
+return;
+
+}
+
+if(jenis==""){
+
+alert("Jenis belum dipilih");
+
+return;
+
+}
+
+if(editId){
+
+await updateDoc(doc(db,"barang",editId),{
+
+nama,
+
+jenis,
+
+jumlah
+
+});
+
+}else{
+
+await addDoc(collection(db,"barang"),{
+
+nama,
+
+jenis,
+
+jumlah
+
+});
+
+}
+
+tutup();
+
+}
+
+
+
+window.hapusBarang=async function(id){
+
+if(confirm("Hapus barang ini?")){
+
+await deleteDoc(doc(db,"barang",id));
+
+}
+
+}
+
+
+
+// ======================================================
+// LOAD DATA BARANG
+// ======================================================
+
+async function loadData(){
+
+let table=document.getElementById("table");
+
+table.innerHTML="";
+
+let total=0;
+
+let habis=0;
+
+let snap=await getDocs(collection(db,"barang"));
+
+snap.forEach((d)=>{
+
+let data=d.data();
+
+total++;
+
+if(data.jumlah==0){
+
+habis++;
+
+}
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${data.nama}</td>
+
+<td>${data.jenis}</td>
+
+<td>${data.jumlah}</td>
+
+<td>
+
+<button
+onclick='openModal("${d.id}",${JSON.stringify(data)})'>
+Edit
+</button>
+
+<button
+onclick='hapusBarang("${d.id}")'>
+Hapus
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("totalBarang").innerHTML=total;
+
+document.getElementById("stokHabis").innerHTML=habis;
+
+}
+
+
+
+// ======================================================
+// SEARCH
+// ======================================================
+
+window.search=function(keyword){
+
+keyword=keyword.toLowerCase();
+
+document.querySelectorAll("#table tr").forEach(row=>{
+
+row.style.display=row.innerText.toLowerCase().includes(keyword)
+
+? ""
+
+:"none";
+
+});
+
+}
+
+
+
+// ======================================================
+// LOAD GRAFIK
+// ======================================================
+
 function loadGrafik(){
 
-onSnapshot(collection(db,"peminjaman"), (snapshot)=>{
+onSnapshot(collection(db,"peminjaman"),(snapshot)=>{
 
-let dataMap = {};
+let dataMap={};
 
-snapshot.forEach(d=>{
+snapshot.forEach((d)=>{
 
-let data = d.data();
+let data=d.data();
 
-// hanya hitung yang dipinjam
-if(data.status === "dipinjam"){
+if(data.status=="dipinjam"){
 
-if(dataMap[data.barang]){
-dataMap[data.barang]++;
-}else{
-dataMap[data.barang] = 1;
+if(!dataMap[data.barang]){
+
+dataMap[data.barang]=0;
+
 }
+
+dataMap[data.barang]+=Number(data.jumlah);
 
 }
 
@@ -131,139 +322,142 @@ updateChart(dataMap);
 
 }
 
+
+
+// ======================================================
+// UPDATE CHART
+// ======================================================
+
+function updateChart(data){
+
+let labels=Object.keys(data);
+
+let values=Object.values(data);
+
+if(chart){
+
+chart.destroy();
+
+}
+
+chart=new Chart(document.getElementById("chart"),{
+
+type:"bar",
+
+data:{
+
+labels,
+
+datasets:[{
+
+label:"Jumlah Dipinjam",
+
+data:values,
+
+backgroundColor:"#6366f1",
+
+borderRadius:10
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true,
+
+ticks:{
+
+precision:0
+
+}
+
+}
+
+}
+
+}
+
+});
+
+}
+
+
+
+// ======================================================
+// LOAD PEMINJAMAN
+// ======================================================
+
 function loadPeminjaman(){
 
-const table = document.getElementById("tablePinjam");
+const table=document.getElementById("tablePinjam");
 
-onSnapshot(collection(db,"peminjaman"), (snapshot)=>{
+onSnapshot(collection(db,"peminjaman"),(snapshot)=>{
 
-table.innerHTML = "";
+table.innerHTML="";
 
-snapshot.forEach(doc=>{
+let total=0;
 
-let data = doc.data();
+snapshot.forEach((d)=>{
 
-table.innerHTML += `
+let data=d.data();
+
+total++;
+
+table.innerHTML+=`
+
 <tr>
-<td>${data.nama_user || "-"}</td>
-<td>${data.nama_user || "-"}</td>
-<td>${data.barang || "-"}</td>
-<td>${data.jumlah || 1}</td>
+
+<td>${data.nama??"-"}</td>
+
+<td>${data.email??"-"}</td>
+
+<td>${data.kelas??"-"}</td>
+
+<td>${data.barang??"-"}</td>
+
+<td>${data.jumlah??0}</td>
+
+<td>${data.status??"-"}</td>
+
+<td>${data.tanggal_pinjam??"-"}</td>
+
 </tr>
+
 `;
 
 });
 
-});
+document.getElementById("totalPinjam").innerHTML=total;
 
-}
-loadPeminjaman();
-// ========================
-// UPDATE CHART
-// ========================
-function updateChart(data){
-
-let labels = Object.keys(data);
-let values = Object.values(data);
-
-if(chart){
-chart.destroy();
-}
-
-chart = new Chart(document.getElementById("chart"),{
-type:"bar",
-data:{
-labels:labels,
-datasets:[{
-label:"Jumlah Dipinjam",
-data:values
-}]
-}
 });
 
 }
 
 
+
+// ======================================================
 // INIT
+// ======================================================
+
+loadData();
+
 loadGrafik();
 
-let editId = null;
-
-// buka modal
-window.openModal = function(id=null,data=null){
-document.getElementById("modal").style.display="block";
-
-if(data){
-editId = id;
-document.getElementById("nama").value = data.nama;
-document.getElementById("jenis").value = data.jenis;
-document.getElementById("jumlah").value = data.jumlah;
-}else{
-editId = null;
-}
-};
-
-window.tutup = function(){
-document.getElementById("modal").style.display="none";
-};
-
-// SIMPAN (ADD / UPDATE)
-window.pinjam = async function(id,namaBarang,stok){
-
-let qty = parseInt(document.getElementById(`qty-${id}`).value);
-
-// validasi
-if(qty <= 0){
-alert("Jumlah tidak valid!");
-return;
-}
-
-if(qty > stok){
-alert("Stok tidak cukup!");
-return;
-}
-
-try{
-
-let user = auth.currentUser;
-
-// 1. simpan ke peminjaman
-await addDoc(collection(db,"peminjaman"),{
-nama: user.displayName || "User",
-email: user.email,
-barang: namaBarang,
-barangID: id,
-jumlah: qty,
-status: "dipinjam",
-tanggal: new Date().toLocaleDateString()
-});
-
-// 2. kurangi stok
-let ref = doc(db,"barang",id);
-let snap = await getDoc(ref);
-
-await updateDoc(ref,{
-jumlah: snap.data().jumlah - qty
-});
-
-alert("Berhasil meminjam!");
-
-}catch(e){
-console.log(e);
-alert("Gagal meminjam");
-}
-
-};
-    
-window.search = function(keyword){
-    
-let rows = document.querySelectorAll("#table tr");
-    
-rows.forEach(r=>{
-let text = r.innerText.toLowerCase();
-r.style.display = text.includes(keyword.toLowerCase())
-? "" : "none";
-});
-    
-};
-loadData();
+loadPeminjaman();

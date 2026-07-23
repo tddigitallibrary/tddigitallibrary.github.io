@@ -1,361 +1,449 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Inventaris</title>
 
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* RESET */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI;
-}
+    <title>Login | Inventaris Kelas</title>
 
-/* BODY */
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#6366f1,#06b6d4);
-}
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-/* CONTAINER */
-.container{
-display:flex;
-width:900px;
-height:550px;
-background:white;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 15px 40px rgba(0,0,0,0.2);
-}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-/* LEFT PANEL */
-.left{
-flex:1;
-background:linear-gradient(135deg,#4f46e5,#06b6d4);
-color:white;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:30px;
-}
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 
-.left h1{
-font-size:32px;
-margin-bottom:10px;
-}
-
-/* RIGHT PANEL */
-.right{
-flex:1;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-}
-
-/* TOGGLE BUTTON */
-.toggle{
-display:flex;
-margin-bottom:20px;
-gap:10px;
-}
-
-.toggle button{
-padding:10px 20px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-background:#eee;
-}
-
-.toggle button.active{
-background:#6366f1;
-color:white;
-}
-
-/* FORM WRAPPER */
-.form-wrapper{
-width:80%;
-overflow:hidden;
-}
-
-/* FORM CONTAINER */
-.form-container{
-display:flex;
-width:200%;
-transition:0.5s;
-}
-
-/* FORM */
-.form{
-width:50%;
-padding:10px;
-display:flex;
-flex-direction:column;
-gap:12px;
-animation:fade 0.3s;
-}
-
-.form h2{
-text-align:center;
-margin-bottom:10px;
-}
-
-/* INPUT */
-input,select{
-padding:12px;
-border-radius:8px;
-border:1px solid #ccc;
-outline:none;
-}
-
-/* BUTTON */
-.btn{
-padding:12px;
-border:none;
-border-radius:8px;
-background:#6366f1;
-color:white;
-cursor:pointer;
-transition:0.2s;
-}
-
-.btn:hover{
-transform:translateY(-2px);
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* ANIMASI */
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(10px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-/* POSISI */
-.form-container.login{
-transform:translateX(0%);
-}
-
-.form-container.register{
-transform:translateX(-50%);
-}
-
-</style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-<!-- LEFT -->
-<div class="left">
-<h1>📦 Inventaris Kelas</h1>
-<p>Kelola barang kelas dengan mudah & modern</p>
-</div>
+        <!-- ==========================
+             LEFT PANEL
+        =========================== -->
 
-<!-- RIGHT -->
-<div class="right">
+        <div class="left">
 
-<!-- TOGGLE -->
-<div class="toggle">
-<button id="btnLogin" class="active">Login</button>
-<button id="btnRegister">Register</button>
-</div>
+            <div class="hero">
 
-<!-- FORM -->
-<div class="form-wrapper">
+                <div class="logo">
 
-<div class="form-container login" id="formContainer">
+                    📦
 
-<!-- LOGIN -->
-<div class="form">
-<h2>Login</h2>
+                </div>
 
-<input type="email" id="loginEmail" placeholder="Email">
-<input type="password" id="loginPassword" placeholder="Password">
+                <h1>Inventaris Kelas</h1>
 
-<button class="btn" onclick="login()">Masuk</button>
+                <p>
+                    Kelola barang kelas dengan mudah,
+                    cepat, dan modern menggunakan
+                    sistem inventaris berbasis web.
+                </p>
 
-</div>
+            </div>
 
-<!-- REGISTER -->
-<div class="form">
-<h2>Register</h2>
+        </div>
 
-<input type="text" id="nama" placeholder="Nama">
-<input type="email" id="regEmail" placeholder="Email">
-<input type="password" id="regPassword" placeholder="Password">
+        <!-- ==========================
+             RIGHT PANEL
+        =========================== -->
 
-<select id="role">
-<option value="user">Siswa</option>
-<option value="admin">Admin</option>
-</select>
+        <div class="right">
 
-<button class="btn" onclick="register()">Daftar</button>
+            <!-- Toggle -->
+            <div class="toggle">
 
-</div>
+                <button id="btnLogin" class="active">
+                    Login
+                </button>
 
-</div>
+                <button id="btnRegister">
+                    Register
+                </button>
 
-</div>
+            </div>
 
-</div>
+            <!-- Form Wrapper -->
+            <div class="form-wrapper">
 
-</div>
+                <div class="form-container login" id="formContainer">
+                                      <!-- ==========================
+                         LOGIN
+                    =========================== -->
 
-<script type="module">
+                    <div class="form">
 
+                      <h2>Login</h2>
+
+                      <input
+                          type="email"
+                          id="loginEmail"
+                          placeholder="Masukkan Email"
+                          required
+                      >
+
+                      <input
+                          type="password"
+                          id="loginPassword"
+                          placeholder="Masukkan Password"
+                          required
+                      >
+
+                      <button
+                          class="btn"
+                          onclick="login()"
+                      >
+                          Masuk
+                      </button>
+
+                  </div>
+
+                  <!-- ==========================
+                       REGISTER
+                  =========================== -->
+
+                  <div class="form">
+
+                      <h2>Registrasi Siswa</h2>
+
+                      <input
+                          type="text"
+                          id="nama"
+                          placeholder="Nama Lengkap"
+                          required
+                      >
+
+                      <select id="kelas" required>
+
+                          <option value="">
+                              Pilih Kelas
+                          </option>
+
+                          <option>X 1</option>
+                          <option>X 2</option>
+                          <option>X 3</option>
+                          <option>X 4</option>
+
+                          <option>XI IPA 1</option>
+                          <option>XI IPA 2</option>
+                          <option>XI IPS 1</option>
+                          <option>XI IPS 2</option>
+
+                          <option>XII IPA 1</option>
+                          <option>XII IPA 2</option>
+                          <option>XII IPS 1</option>
+                          <option>XII IPS 2</option>
+
+                      </select>
+
+                      <input
+                          type="email"
+                          id="regEmail"
+                          placeholder="Masukkan Email"
+                          required
+                      >
+
+                      <input
+                          type="password"
+                          id="regPassword"
+                          placeholder="Masukkan Password"
+                          required
+                      >
+
+                      <button
+                          class="btn"
+                          onclick="register()"
+                      >
+                          Daftar
+                      </button>
+
+                  </div>
+
+              </div>
+          </div>
+
+      </div>
+
+  </div>
+  <script type="module">
+
+    // ===========================
 // IMPORT FIREBASE
-import { initializeApp } from
-"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+// ===========================
+
+import { auth, db } from "./firebase.js";
 
 import {
-getAuth,
-signInWithEmailAndPassword,
-createUserWithEmailAndPassword
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    updateProfile
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 import {
-getFirestore,
-doc,
-setDoc,
-getDoc
+    doc,
+    setDoc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 
-// CONFIG (PUNYA ANDA - SUDAH BENAR)
-const firebaseConfig = {
-  apiKey: "AIzaSyBxO6-KZYaWRLnGuO2bhQ0oP_Rs0xjppoE",
-  authDomain: "peminjaman-buku-77482.firebaseapp.com",
-  projectId: "peminjaman-buku-77482",
-  storageBucket: "peminjaman-buku-77482.firebasestorage.app",
-  messagingSenderId: "189272980506",
-  appId: "1:189272980506:web:90486cc16aa7fb814165a3",
-  measurementId: "G-VPXLXPQJ1D"
-};
+// ===========================
+// TOGGLE LOGIN & REGISTER
+// ===========================
 
-
-// INIT
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-
-// =======================
-// TOGGLE FORM (TETAP)
-// =======================
 const container = document.getElementById("formContainer");
+
 const btnLogin = document.getElementById("btnLogin");
 const btnRegister = document.getElementById("btnRegister");
 
-btnRegister.onclick = function(){
-container.classList.remove("login");
-container.classList.add("register");
+btnRegister.onclick = function () {
 
-btnRegister.classList.add("active");
-btnLogin.classList.remove("active");
-};
+    container.classList.remove("login");
+    container.classList.add("register");
 
-btnLogin.onclick = function(){
-container.classList.remove("register");
-container.classList.add("login");
-
-btnLogin.classList.add("active");
-btnRegister.classList.remove("active");
-};
-
-
-// =======================
-// LOGIN (REAL FIREBASE)
-// =======================
-window.login = async function(){
-
-let email = document.getElementById("loginEmail").value;
-let password = document.getElementById("loginPassword").value;
-
-try{
-
-let userCred = await signInWithEmailAndPassword(auth,email,password);
-
-let uid = userCred.user.uid;
-
-// ambil role dari firestore
-let userDoc = await getDoc(doc(db,"users",uid));
-
-if(!userDoc.exists()){
-alert("Data user tidak ditemukan");
-return;
-}
-
-let role = userDoc.data().role;
-
-// redirect
-if(role === "admin"){
-window.location.href = "admin.html";
-}else{
-window.location.href = "user.html";
-}
-
-}catch(e){
-
-alert("Login gagal: " + e.message);
-console.log(e);
+    btnRegister.classList.add("active");
+    btnLogin.classList.remove("active");
 
 }
+
+btnLogin.onclick = function () {
+
+    container.classList.remove("register");
+    container.classList.add("login");
+
+    btnLogin.classList.add("active");
+    btnRegister.classList.remove("active");
 
 };
+/* ===========================
+   LOGIN
+=========================== */
+
+window.login = async function () {
+
+  const email = document.getElementById("loginEmail").value.trim();
+
+  const password = document.getElementById("loginPassword").value;
 
 
-// =======================
-// REGISTER (REAL FIREBASE)
-// =======================
-window.register = async function(){
+  if (email === "" || password === "") {
 
-let nama = document.getElementById("nama").value;
-let email = document.getElementById("regEmail").value;
-let password = document.getElementById("regPassword").value;
-let role = document.getElementById("role").value;
+      alert("Email dan Password wajib diisi!");
 
-try{
+      return;
 
-let userCred = await createUserWithEmailAndPassword(auth,email,password);
+  }
 
-let uid = userCred.user.uid;
 
-// simpan ke firestore
-await setDoc(doc(db,"users",uid),{
-nama:nama,
-email:email,
-role:role
-});
+  try {
 
-alert("Register berhasil, silakan login");
+      // Login Firebase
+      const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+      );
 
-}catch(e){
+      const uid = userCredential.user.uid;
 
-alert("Register gagal: " + e.message);
-console.log(e);
 
-}
+      // Ambil data user dari Firestore
+      const userRef = doc(db, "users", uid);
+
+      const userSnap = await getDoc(userRef);
+
+
+      if (!userSnap.exists()) {
+
+          alert("Data pengguna tidak ditemukan.");
+
+          return;
+
+      }
+
+
+      const data = userSnap.data();
+
+
+      // Redirect berdasarkan role
+      if (data.role === "admin") {
+
+          window.location.href = "admin.html";
+
+      } else {
+
+          window.location.href = "user.html";
+
+      }
+
+  } catch (error) {
+
+      console.error(error);
+
+      switch (error.code) {
+
+          case "auth/invalid-email":
+              alert("Format email tidak valid.");
+              break;
+
+          case "auth/user-not-found":
+              alert("Email belum terdaftar.");
+              break;
+
+          case "auth/wrong-password":
+              alert("Password salah.");
+              break;
+
+          case "auth/invalid-credential":
+              alert("Email atau password salah.");
+              break;
+
+          case "auth/too-many-requests":
+              alert("Terlalu banyak percobaan login. Coba beberapa saat lagi.");
+              break;
+
+          default:
+              alert("Login gagal.\n\n" + error.message);
+
+      }
+
+  }
+
+};
+/* ===========================
+   REGISTER
+=========================== */
+
+window.register = async function () {
+
+  const nama = document.getElementById("nama").value.trim();
+
+  const kelas = document.getElementById("kelas").value;
+
+  const email = document.getElementById("regEmail").value.trim();
+
+  const password = document.getElementById("regPassword").value;
+
+
+  // Validasi
+  if (nama === "" || kelas === "" || email === "" || password === "") {
+
+      alert("Semua data wajib diisi!");
+
+      return;
+
+  }
+
+
+  try {
+
+      // Membuat akun Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(
+
+          auth,
+
+          email,
+
+          password
+
+      );
+
+
+      const user = userCredential.user;
+
+
+      // Simpan nama pada Firebase Authentication
+      await updateProfile(user, {
+
+          displayName: nama
+
+      });
+
+
+      // Simpan data user ke Firestore
+      await setDoc(doc(db, "users", user.uid), {
+
+          nama: nama,
+
+          kelas: kelas,
+
+          email: email,
+
+          role: "user",
+
+          dibuatPada: new Date()
+
+      });
+
+
+      alert("Registrasi berhasil.\nSilakan login.");
+
+
+      // Kosongkan form
+      document.getElementById("nama").value = "";
+
+      document.getElementById("kelas").selectedIndex = 0;
+
+      document.getElementById("regEmail").value = "";
+
+      document.getElementById("regPassword").value = "";
+
+
+      // Kembali ke form Login
+      container.classList.remove("register");
+
+      container.classList.add("login");
+
+      btnLogin.classList.add("active");
+
+      btnRegister.classList.remove("active");
+
+
+  } catch (error) {
+
+      console.error(error);
+
+
+      switch (error.code) {
+
+          case "auth/email-already-in-use":
+
+              alert("Email sudah digunakan.");
+
+              break;
+
+
+          case "auth/invalid-email":
+
+              alert("Format email tidak valid.");
+
+              break;
+
+
+          case "auth/weak-password":
+
+              alert("Password minimal 6 karakter.");
+
+              break;
+
+
+          default:
+
+              alert("Registrasi gagal.\n\n" + error.message);
+
+      }
+
+  }
 
 };
 
 </script>
 
 </body>
+
 </html>

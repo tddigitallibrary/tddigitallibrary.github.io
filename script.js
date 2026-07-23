@@ -1,24 +1,24 @@
-// DARK MODE
-document.getElementById("toggleDark").onclick = function(){
+const container = document.getElementById("formContainer");
 
-    document.body.classList.toggle("dark");
-    
-    };
-    
-    
-    // CHART
-    const ctx = document.getElementById("chart");
-    
-    new Chart(ctx,{
-    
-    type:"bar",
-    
-    data:{
-    labels:["Proyektor","Spidol","Laptop"],
-    datasets:[{
-    label:"Peminjaman",
-    data:[5,3,2]
-    }]
-    }
-    
-    });
+const btnLogin = document.getElementById("btnLogin");
+const btnRegister = document.getElementById("btnRegister");
+
+btnRegister.onclick = function () {
+
+    container.classList.remove("login");
+    container.classList.add("register");
+
+    btnRegister.classList.add("active");
+    btnLogin.classList.remove("active");
+
+}
+
+btnLogin.onclick = function () {
+
+    container.classList.remove("register");
+    container.classList.add("login");
+
+    btnLogin.classList.add("active");
+    btnRegister.classList.remove("active");
+
+}

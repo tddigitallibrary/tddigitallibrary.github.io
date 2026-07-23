@@ -33,38 +33,94 @@ alert("Stok habis!");
 return;
 }
 
+
+let qty = document.getElementById(`qty-${id}`).value;
+
+qty = Number(qty);
+
+
+if(qty > jumlah){
+alert("Jumlah melebihi stok!");
+return;
+}
+
+
+let kelas = prompt("Masukkan kelas Anda:");
+
+if(!kelas){
+alert("Kelas wajib diisi!");
+return;
+}
+
+
+
 try{
 
-// ambil user login
+
 let user = auth.currentUser;
 
-// 1. simpan ke koleksi peminjaman
+
+if(!user){
+alert("Silahkan login terlebih dahulu");
+return;
+}
+
+
+
+// simpan data peminjaman
+
 await addDoc(collection(db,"peminjaman"),{
-nama: user.displayName || "User",
+
+namaPeminjam: user.displayName || "User",
+
 email: user.email,
-barang: namaBarang,
+
+kelas: kelas,
+
+barang: nama,
+
 barangID: id,
+
 jumlah: qty,
-status: "dipinjam",
-tanggal: new Date().toLocaleDateString()
+
+status:"dipinjam",
+
+tanggal:new Date().toLocaleDateString()
+
 });
 
-// 2. kurangi stok barang
+
+
+// update stok
+
 let ref = doc(db,"barang",id);
+
 let snap = await getDoc(ref);
+
 
 let stokSekarang = snap.data().jumlah;
 
+
 await updateDoc(ref,{
-jumlah: stokSekarang - 1
+
+jumlah: stokSekarang - qty
+
 });
+
+
 
 alert("Berhasil meminjam!");
 
+
+
 }catch(e){
+
 console.log(e);
+
 alert("Gagal meminjam");
+
 }
+
 
 };
 // LOAD DATA
@@ -82,7 +138,7 @@ let data = doc.data();
 
 let jenis = data.jenis || "Umum";
 
-let isHabis = data.jumlah == 0;
+let isHabis = data.jumlah <= 0;
 let warna = isHabis ? "red" : "#10b981";
 
 list.innerHTML += `
@@ -100,7 +156,7 @@ ${isHabis ? "❌ Habis" : "✔ Tersedia"} (${data.jumlah})
 
 <button 
 ${isHabis ? "disabled" : ""} 
-onclick="pinjam('${doc.id}','${data.nama}',${data.jumlah})">
+onclick="pinjam('${doc.id}','${data.nama}',${data.jumlah})"
 
 Pinjam
 

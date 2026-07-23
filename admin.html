@@ -340,24 +340,20 @@ document.body.classList.add("dark");
 
 function searchBarang(keyword){
 
-keyword = keyword.toLowerCase();
+    keyword = keyword.toLowerCase();
 
-let cards=document.querySelectorAll(".card");
+    let cards = document.querySelectorAll(".item-card");
 
-cards.forEach(card=>{
+    cards.forEach(card=>{
 
-card.style.display=
+        card.style.display =
+            card.innerText.toLowerCase().includes(keyword)
+            ? ""
+            : "none";
 
-card.innerText.toLowerCase().includes(keyword)
-
-? ""
-
-: "none";
-
-});
+    });
 
 }
-
 
 
 // ================================

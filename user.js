@@ -1,12 +1,13 @@
 import { db, auth } from "./firebase.js";
 
 import {
-collection,
-onSnapshot,
-addDoc,
-updateDoc,
-doc,
-getDoc
+    collection,
+    onSnapshot,
+    addDoc,
+    updateDoc,
+    doc,
+    getDoc,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 import { signOut } from
@@ -24,105 +25,204 @@ console.log(e);
 
 };
 
+/* ==========================================
+   DASHBOARD STATISTIK
+========================================== */
+
+function loadDashboard(){
+
+    // ===========================
+    // TOTAL BARANG
+    // ===========================
+
+    onSnapshot(collection(db,"barang"), (snapshot)=>{
+
+        let totalBarang = 0;
+
+        snapshot.forEach((doc)=>{
+
+            totalBarang += Number(doc.data().jumlah || 0);
+
+        });
+
+        let el = document.getElementById("totalBarang");
+
+        if(el){
+
+            el.innerHTML = totalBarang;
+
+        }
+
+    });
+
+
+    // ===========================
+    // PEMINJAMAN
+    // ===========================
+
+    onSnapshot(collection(db,"peminjaman"), (snapshot)=>{
+
+        let dipinjam = 0;
+
+        let kembali = 0;
+
+        snapshot.forEach((doc)=>{
+
+            let data = doc.data();
+
+            if(data.status === "dipinjam"){
+
+                dipinjam++;
+
+            }
+
+            if(data.status === "dikembalikan"){
+
+                kembali++;
+
+            }
+
+        });
+
+        let pinjam = document.getElementById("totalPinjam");
+
+        if(pinjam){
+
+            pinjam.innerHTML = dipinjam;
+
+        }
+
+        let ret = document.getElementById("totalReturn");
+
+        if(ret){
+
+            ret.innerHTML = kembali;
+
+        }
+
+    });
+
+}
 
 // PINJAM (dummy dulu)
-window.pinjam = async function(id,nama,jumlah){
+window.pinjam = async function(id, namaBarang, stokBarang){
 
-if(jumlah <= 0){
-alert("Stok habis!");
-return;
+    try{
+
+        const user = auth.currentUser;
+
+        if(!user){
+
+            alert("Silakan login terlebih dahulu.");
+
+            return;
+
+        }
+
+        // Ambil jumlah yang dipilih
+        const qty = Number(
+            document.getElementById(`qty-${id}`).value
+        );
+
+        if(isNaN(qty) || qty <= 0){
+
+            alert("Jumlah pinjam tidak valid.");
+
+            return;
+
+        }
+
+        if(qty > stokBarang){
+
+            alert("Jumlah melebihi stok.");
+
+            return;
+
+        }
+
+        // Ambil data user
+        const userRef = doc(db,"users",user.uid);
+
+        const userSnap = await getDoc(userRef);
+
+        if(!userSnap.exists()){
+
+            alert("Data user tidak ditemukan.");
+
+            return;
+
+        }
+
+        const dataUser = userSnap.data();
+
+        // Ambil data barang terbaru
+        const barangRef = doc(db,"barang",id);
+
+        const barangSnap = await getDoc(barangRef);
+
+        if(!barangSnap.exists()){
+
+            alert("Barang tidak ditemukan.");
+
+            return;
+
+        }
+
+        const stokSekarang = barangSnap.data().jumlah;
+
+        if(qty > stokSekarang){
+
+            alert("Stok sudah berubah.");
+
+            return;
+
+        }
+
+        // Simpan peminjaman
+        await addDoc(collection(db,"peminjaman"),{
+
+            uid:user.uid,
+
+            nama:dataUser.nama,
+
+            kelas:dataUser.kelas,
+
+            email:dataUser.email,
+
+            barang:namaBarang,
+
+            barangID:id,
+
+            jumlah:qty,
+
+            status:"dipinjam",
+
+            tanggal:new Date(),
+
+            timestamp:Date.now()
+
+        });
+
+        // Kurangi stok
+        await updateDoc(barangRef,{
+
+            jumlah:stokSekarang-qty
+
+        });
+
+        alert("Peminjaman berhasil.");
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Gagal meminjam.");
+
+    }
+
 }
-
-
-let qty = document.getElementById(`qty-${id}`).value;
-
-qty = Number(qty);
-
-
-if(qty > jumlah){
-alert("Jumlah melebihi stok!");
-return;
-}
-
-
-let kelas = prompt("Masukkan kelas Anda:");
-
-if(!kelas){
-alert("Kelas wajib diisi!");
-return;
-}
-
-
-
-try{
-
-
-let user = auth.currentUser;
-
-
-if(!user){
-alert("Silahkan login terlebih dahulu");
-return;
-}
-
-
-
-// simpan data peminjaman
-
-await addDoc(collection(db,"peminjaman"),{
-
-namaPeminjam: user.displayName || "User",
-
-email: user.email,
-
-kelas: kelas,
-
-barang: nama,
-
-barangID: id,
-
-jumlah: qty,
-
-status:"dipinjam",
-
-tanggal:new Date().toLocaleDateString()
-
-});
-
-
-
-// update stok
-
-let ref = doc(db,"barang",id);
-
-let snap = await getDoc(ref);
-
-
-let stokSekarang = snap.data().jumlah;
-
-
-await updateDoc(ref,{
-
-jumlah: stokSekarang - qty
-
-});
-
-
-
-alert("Berhasil meminjam!");
-
-
-
-}catch(e){
-
-console.log(e);
-
-alert("Gagal meminjam");
-
-}
-
-
-};
 // LOAD DATA
 function load(){
 
@@ -204,4 +304,5 @@ list.innerHTML += `
 
 }
 
+loadDashboard();
 load();

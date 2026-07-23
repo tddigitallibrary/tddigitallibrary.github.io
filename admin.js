@@ -6,20 +6,15 @@
 import { db, auth } from "./firebase.js";
 
 // firestore
-import{
-
-collection,
-addDoc,
-getDocs,
-getDoc,
-doc,
-updateDoc,
-deleteDoc,
-onSnapshot
-
-} from
-"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
+import {
+    collection,
+    onSnapshot,
+    addDoc,
+    updateDoc,
+    doc,
+    getDoc,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 // auth
 import{
 
@@ -64,6 +59,84 @@ location.href="index.html";
 
 }
 
+/* ==========================================
+   DASHBOARD STATISTIK
+========================================== */
+
+function loadDashboard(){
+
+    // ===========================
+    // TOTAL BARANG
+    // ===========================
+
+    onSnapshot(collection(db,"barang"), (snapshot)=>{
+
+        let totalBarang = 0;
+
+        snapshot.forEach((doc)=>{
+
+            totalBarang += Number(doc.data().jumlah || 0);
+
+        });
+
+        let el = document.getElementById("totalBarang");
+
+        if(el){
+
+            el.innerHTML = totalBarang;
+
+        }
+
+    });
+
+
+    // ===========================
+    // PEMINJAMAN
+    // ===========================
+
+    onSnapshot(collection(db,"peminjaman"), (snapshot)=>{
+
+        let dipinjam = 0;
+
+        let kembali = 0;
+
+        snapshot.forEach((doc)=>{
+
+            let data = doc.data();
+
+            if(data.status === "dipinjam"){
+
+                dipinjam++;
+
+            }
+
+            if(data.status === "dikembalikan"){
+
+                kembali++;
+
+            }
+
+        });
+
+        let pinjam = document.getElementById("totalPinjam");
+
+        if(pinjam){
+
+            pinjam.innerHTML = dipinjam;
+
+        }
+
+        let ret = document.getElementById("totalReturn");
+
+        if(ret){
+
+            ret.innerHTML = kembali;
+
+        }
+
+    });
+
+}
 
 
 // ======================================================
@@ -455,6 +528,9 @@ document.getElementById("totalPinjam").innerHTML=total;
 // ======================================================
 // INIT
 // ======================================================
+load();
+
+loadDashboard();
 
 loadData();
 

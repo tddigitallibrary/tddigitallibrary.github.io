@@ -203,13 +203,10 @@ Jumlah Pinjam
 
 <input
 
-type="number"
-
-id="qty"
-
-min="1"
-
+id="qty-${doc.id}"
 value="1"
+min="1"
+max="${data.jumlah}"
 
 >
 
@@ -354,6 +351,7 @@ function searchBarang(keyword){
     });
 
 }
+
 
 
 // ================================

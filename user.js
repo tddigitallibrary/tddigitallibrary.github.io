@@ -142,25 +142,58 @@ let isHabis = data.jumlah <= 0;
 let warna = isHabis ? "red" : "#10b981";
 
 list.innerHTML += `
-<div class="card">
+<div class="item-card">
 
-<div class="badge">${jenis}</div>
+    <div class="item-top">
 
-<h3>${data.nama}</h3>
+        <div class="item-icon">
+            <i class="fa-solid fa-box"></i>
+        </div>
 
-<p style="color:${warna}; font-weight:bold;">
-${isHabis ? "❌ Habis" : "✔ Tersedia"} (${data.jumlah})
-</p>
+        <div class="badge">
+            ${jenis}
+        </div>
 
-<input type="number" min="1" max="${data.jumlah}" value="1" id="qty-${doc.id}">
+    </div>
 
-<button 
-${isHabis ? "disabled" : ""} 
-onclick="pinjam('${doc.id}','${data.nama}',${data.jumlah})"
+    <div class="item-info">
 
-Pinjam
+        <div class="item-title">
+            ${data.nama}
+        </div>
 
-</button>
+        <div class="stock ${isHabis ? "empty" : "available"}">
+            ${isHabis ? "❌ Habis" : "✔ Tersedia"} (${data.jumlah})
+        </div>
+
+    </div>
+
+    <div class="item-action">
+
+        <div class="qty-box">
+
+            <label>Jumlah</label>
+
+            <input
+                type="number"
+                min="1"
+                max="${data.jumlah}"
+                value="1"
+                id="qty-${doc.id}"
+            >
+
+        </div>
+
+        <button
+            class="btn-pinjam"
+            ${isHabis ? "disabled" : ""}
+            onclick="pinjam('${doc.id}','${data.nama}',${data.jumlah})"
+        >
+            <i class="fa-solid fa-hand-holding"></i>
+            Pinjam
+        </button>
+
+    </div>
 
 </div>
 `;

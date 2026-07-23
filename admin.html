@@ -1,162 +1,409 @@
+
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
-<title>User Inventaris</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<title>User Dashboard</title>
 
-<style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-/* GLOBAL */
-body{
-font-family:'Inter',sans-serif;
-margin:0;
-background:linear-gradient(135deg,#eef2ff,#f8fafc);
-transition:0.3s;
-}
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-/* DARK MODE */
-body.dark{
-background:#0f172a;
-color:white;
-}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-/* HEADER */
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px;
-}
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-/* SEARCH */
-.search{
-padding:10px;
-border-radius:8px;
-border:none;
-width:200px;
-}
+<link rel="stylesheet" href="user.css">
 
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
-padding:20px;
-}
-
-/* CARD */
-.card{
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-transition:0.3s;
-position:relative;
-}
-
-.card:hover{
-transform:translateY(-5px) scale(1.02);
-}
-
-/* DARK CARD */
-body.dark .card{
-background:#1e293b;
-}
-
-/* BADGE */
-.badge{
-position:absolute;
-top:10px;
-right:10px;
-background:#6366f1;
-color:white;
-padding:5px 10px;
-border-radius:10px;
-font-size:12px;
-}
-
-/* BUTTON */
-button{
-margin-top:10px;
-padding:8px;
-border:none;
-border-radius:8px;
-background:#10b981;
-color:white;
-cursor:pointer;
-transition:0.2s;
-}
-
-button:hover{
-transform:translateY(-2px);
-}
-
-/* DISABLED */
-button:disabled{
-background:#9ca3af;
-cursor:not-allowed;
-}
-
-input[type="number"]{
-width:60px;
-padding:5px;
-margin-top:10px;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-/* TOP BUTTONS */
-.top-btn{
-margin-left:10px;
-background:#6366f1;
-}
-
-</style>
 </head>
 
-<body>
+<!-- ========================= -->
+<!-- DASHBOARD USER -->
+<!-- ========================= -->
 
-<!-- HEADER -->
-<div class="header">
-<h1>📦 Inventaris Kelas</h1>
+<section id="dashboardPage">
 
-<div>
-<input class="search" id="search" placeholder="Cari barang..." onkeyup="searchBarang(this.value)">
+    <div class="cards">
 
-<button class="top-btn" onclick="toggleDark()">🌙</button>
-<button class="top-btn" onclick="logout()">Logout</button>
+        <div class="card-info blue">
+
+            <div>
+                <h4>Sedang Dipinjam</h4>
+                <h2 id="totalPinjam">0</h2>
+            </div>
+
+            <i class="fa-solid fa-box-open fa-2x"></i>
+
+        </div>
+
+        <div class="card-info green">
+
+            <div>
+                <h4>Sudah Dikembalikan</h4>
+                <h2 id="totalReturn">0</h2>
+            </div>
+
+            <i class="fa-solid fa-check fa-2x"></i>
+
+        </div>
+
+        <div class="card-info orange">
+
+            <div>
+                <h4>Total Barang</h4>
+                <h2 id="totalBarang">0</h2>
+            </div>
+
+            <i class="fa-solid fa-boxes-stacked fa-2x"></i>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!-- DAFTAR BARANG -->
+<!-- ========================= -->
+
+<section id="barangPage">
+
+<div class="toolbar">
+
+<div class="search-box">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<input
+
+type="text"
+
+placeholder="Cari barang..."
+
+id="search"
+
+onkeyup="searchBarang(this.value)"
+
+>
+
 </div>
 
 </div>
 
-<!-- LIST BARANG -->
-<div class="grid" id="list"></div>
 
+<div class="grid" id="list">
+
+<!-- Card Barang akan dibuat oleh user.js -->
+
+</div>
+
+</section>
+
+
+
+
+<!-- ========================= -->
+<!-- RIWAYAT PEMINJAMAN -->
+<!-- ========================= -->
+
+<section id="riwayatPage">
+
+<div class="table-card">
+
+<div class="title">
+
+<h2>
+
+Riwayat Peminjaman Saya
+
+</h2>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Barang</th>
+
+<th>Jumlah</th>
+
+<th>Status</th>
+
+<th>Tanggal</th>
+
+<th>Aksi</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historyTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+
+
+<!-- ========================= -->
+<!-- MODAL PINJAM -->
+<!-- ========================= -->
+
+<div class="modal" id="pinjamModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h2 id="modalBarang">
+
+Nama Barang
+
+</h2>
+
+<span onclick="closeModal()">
+
+&times;
+
+</span>
+
+</div>
+
+
+<div class="modal-body">
+
+<label>
+
+Jumlah Pinjam
+
+</label>
+
+<input
+
+type="number"
+
+id="qty"
+
+min="1"
+
+value="1"
+
+>
+
+
+<label>
+
+Kelas
+
+</label>
+
+<input
+
+type="text"
+
+id="kelas"
+
+readonly
+
+>
+
+</div>
+
+
+<div class="modal-footer">
+
+<button
+
+class="btn-secondary"
+
+onclick="closeModal()"
+
+>
+
+Batal
+
+</button>
+
+
+<button
+
+class="btn-primary"
+
+onclick="konfirmasiPinjam()"
+
+>
+
+Pinjam
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ====================================================== -->
+<!-- TOAST NOTIFICATION -->
+<!-- ====================================================== -->
+
+<div id="toast" class="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastText">Berhasil</span>
+</div>
+
+<!-- ====================================================== -->
+<!-- LOADING -->
+<!-- ====================================================== -->
+
+<div id="loading" class="loading">
+
+    <div class="loader"></div>
+
+    <p>Memproses...</p>
+
+</div>
+
+<!-- ====================================================== -->
+<!-- FOOTER -->
+<!-- ====================================================== -->
+
+<footer>
+
+    <p>
+
+        © 2026 Inventaris Kelas
+
+        <strong>Firebase Realtime Database</strong>
+
+    </p>
+
+</footer>
+
+<!-- ====================================================== -->
+<!-- SCRIPT -->
+<!-- ====================================================== -->
 
 <script type="module" src="user.js"></script>
 
 <script>
 
+// ================================
 // DARK MODE
+// ================================
+
 function toggleDark(){
+
 document.body.classList.toggle("dark");
+
+localStorage.setItem(
+"darkMode",
+document.body.classList.contains("dark")
+);
+
 }
 
-// SEARCH
+if(localStorage.getItem("darkMode")=="true"){
+
+document.body.classList.add("dark");
+
+}
+
+
+
+// ================================
+// SEARCH BARANG
+// ================================
+
 function searchBarang(keyword){
 
-let cards = document.querySelectorAll(".card");
+keyword = keyword.toLowerCase();
+
+let cards=document.querySelectorAll(".card");
 
 cards.forEach(card=>{
-let text = card.innerText.toLowerCase();
-card.style.display = text.includes(keyword.toLowerCase()) ? "" : "none";
+
+card.style.display=
+
+card.innerText.toLowerCase().includes(keyword)
+
+? ""
+
+: "none";
+
 });
+
+}
+
+
+
+// ================================
+// TOAST
+// ================================
+
+window.showToast=function(text){
+
+let toast=document.getElementById("toast");
+
+document.getElementById("toastText").innerHTML=text;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+},2500);
+
+}
+
+
+
+// ================================
+// LOADING
+// ================================
+
+window.showLoading=function(){
+
+document.getElementById("loading").style.display="flex";
+
+}
+
+window.hideLoading=function(){
+
+document.getElementById("loading").style.display="none";
+
+}
+
+
+
+// ================================
+// MODAL
+// ================================
+
+window.closeModal=function(){
+
+document.getElementById("pinjamModal").style.display="none";
 
 }
 
 </script>
 
 </body>
+
 </html>
